@@ -1,0 +1,39 @@
+/* Estilo general para los encabezados */
+h2 {
+  font-size: 1.8rem; /* Tamaño del título */
+  margin-bottom: 20px;
+  color: #343a40; /* Color del texto */
+  text-align: center; /* Centra los títulos */
+}
+
+/* Estilo general para los párrafos */
+p {
+  font-size: 1rem;
+  color: #6c757d; /* Color del texto */
+  margin-bottom: 30px;
+  text-align: justify; /* Justifica el texto */
+}
+
+/* Estilos para el contenedor de los gráficos */
+.chart {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center; /* Centra los gráficos */
+  align-items: center;
+
+  canvas {
+    width: 100%;
+    max-width: 400px; /* Ajusta el tamaño máximo del gráfico */
+    height: auto;
+  }
+}
+
+/* Estilos específicos para la sección de 'Consumos del día' */
+.day-consumption {
+  margin-bottom: 40px;
+}
+
+/* Estilos específicos para la sección de 'Plato más consumido' */
+.most-consumed {
+  margin-bottom: 40px;
+}

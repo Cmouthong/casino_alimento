@@ -1,0 +1,23 @@
+<div class="home-container">
+  <div class="content">
+    <router-outlet></router-outlet>
+  </div>
+  <nav class="sidebar">
+    <ul>
+      <li> <a (click)="inicio()">Inicio</a></li>
+      <li><a (click)="registroEmpresa()">Registrar Empresa</a></li>
+      <li> <a (click)="registroEmpleado()">Registrar empleado</a></li>
+      <li> <a (click)="consumo()">Registrar consumo</a></li>
+      <li> <a (click)="menu()">Modificar menú</a></li>
+      <li> <a (click)="reporte()">Generar reporte</a></li>
+    </ul>
+    <div class="user-section">
+      <i class="icon-user"></i> <a routerLink="/mi-cuenta">Mi cuenta</a>
+    </div>
+  </nav>
+
+</div>
+
+<footer>
+  <p>&copy; 2024 Casino Alimento. Todos los derechos reservados.</p>
+</footer>

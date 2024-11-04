@@ -1,0 +1,48 @@
+/* Estilo general del formulario */
+form {
+  display: flex;
+  flex-direction: column;
+  width: 350px;
+  margin: 0 auto; /* Centra el formulario horizontalmente */
+}
+
+label {
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+input, textarea {
+  margin-bottom: 15px;
+  padding: 10px;
+  border: 1px solid #ced4da; /* Borde gris claro */
+  border-radius: 5px; /* Bordes redondeados */
+  font-size: 1rem;
+}
+
+textarea {
+  resize: vertical; /* Permitir que el usuario cambie la altura */
+  height: 100px;
+}
+
+button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px;
+  margin-top: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+button:nth-of-type(2) {
+  background-color: #6c757d; /* Color gris para el botón de modificar */
+}
+
+button:nth-of-type(2):hover {
+  background-color: #5a6268; /* Cambia el color al hacer hover */
+}
