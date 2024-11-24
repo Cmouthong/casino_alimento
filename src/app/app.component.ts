@@ -24,10 +24,10 @@ export class AppComponent {
   consumo(){
     this.router.navigate(['/consumo'])
   }
-  menu(){
-    this.router.navigate(['/menu'])
-  }
   reporte(){
     this.router.navigate(['/reporte'])
+  }
+  plato(){
+    this.router.navigate(['/plato'])
   }
 }

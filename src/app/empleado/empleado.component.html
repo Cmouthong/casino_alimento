@@ -1,20 +1,92 @@
-<h2>Registro de empleado</h2>
-<form>
-  <label for="nombre">Nombre del empleado:</label>
-  <input type="text" id="nombre" name="nombre"><br>
+<div class="empleado-container">
+  <!-- Título -->
+  <header class="header">
+    <h1>Gestión de Empleados</h1>
+    <p>Registra y administra los empleados asociados a las empresas.</p>
+  </header>
 
-  <label for="cedula">Cédula:</label>
-  <input type="text" id="cedula" name="cedula"><br>
+  <!-- Formulario -->
+  <section class="form-section">
+    <h2>Registrar Empleado</h2>
+    <form (ngSubmit)="registrarEmpleado()">
+      <div class="form-group">
+        <label for="cedula">Cédula</label>
+        <input
+          type="text"
+          id="cedula"
+          [(ngModel)]="nuevoEmpleado.cedula"
+          name="cedula"
+          placeholder="Ingrese la cédula"
+          required
+        />
+      </div>
 
-  <label for="empresa">Empresa:</label>
-  <select id="empresa" name="empresa">
-    <option value="empresa1">Empresa 1</option>
-    <option value="empresa2">Empresa 2</option>
-  </select><br>
+      <div class="form-group">
+        <label for="nombre">Nombre</label>
+        <input
+          type="text"
+          id="nombre"
+          [(ngModel)]="nuevoEmpleado.nombre"
+          name="nombre"
+          placeholder="Ingrese el nombre"
+          required
+        />
+      </div>
 
-  <label for="telefono">Teléfono:</label>
-  <input type="text" id="telefono" name="telefono"><br>
+      <div class="form-group">
+        <label for="empresaNIT">Empresa (NIT)</label>
+        <input
+          type="text"
+          id="empresaNIT"
+          [(ngModel)]="nuevoEmpleado.empresaNIT"
+          name="empresaNIT"
+          placeholder="Ingrese el NIT de la empresa"
+          required
+        />
+      </div>
 
-  <button type="submit">Guardar empleado</button>
-  <button type="button">Modificar empleado</button>
-</form>
+      <div class="form-group">
+        <label for="telefono">Teléfono</label>
+        <input
+          type="text"
+          id="telefono"
+          [(ngModel)]="nuevoEmpleado.telefono"
+          name="telefono"
+          placeholder="Ingrese el teléfono"
+          required
+        />
+      </div>
+
+      <button type="submit" class="btn-primary">Registrar Empleado</button>
+    </form>
+  </section>
+
+  <!-- Tabla de empleados -->
+  <section class="table-section">
+    <h2>Empleados Registrados</h2>
+    <table class="empleado-table">
+      <thead>
+        <tr>
+          <th>Cédula</th>
+          <th>Nombre</th>
+          <th>Empresa (NIT)</th>
+          <th>Teléfono</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let empleado of empleados">
+          <td>{{ empleado.cedula }}</td>
+          <td>{{ empleado.nombre }}</td>
+          <td>{{ empleado.empresaNIT }}</td>
+          <td>{{ empleado.telefono }}</td>
+          <td>
+            <button class="btn-danger" (click)="eliminarEmpleado(empleado.cedula)">
+              Eliminar
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+</div>

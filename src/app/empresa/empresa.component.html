@@ -1,20 +1,97 @@
-<h2>Registro de empresa</h2>
-<form>
-  <label for="nombre">Nombre de la empresa:</label>
-  <input type="text" id="nombre" name="nombre"><br>
+<div class="empresa-container">
+  <h1>Gestión de Empresas</h1>
 
-  <label for="nit">NIT:</label>
-  <input type="text" id="nit" name="nit"><br>
+  <!-- Formulario para registrar una nueva empresa -->
+  <form (ngSubmit)="registrarEmpresa()" class="formulario-empresa">
+    <div>
+      <label for="nit">NIT:</label>
+      <input
+        type="text"
+        id="nit"
+        [(ngModel)]="nuevaEmpresa.nit"
+        name="nit"
+        placeholder="Ingrese el NIT"
+        required
+      />
+    </div>
 
-  <label for="direccion">Dirección:</label>
-  <input type="text" id="direccion" name="direccion"><br>
+    <div>
+      <label for="nombre">Nombre:</label>
+      <input
+        type="text"
+        id="nombre"
+        [(ngModel)]="nuevaEmpresa.nombre"
+        name="nombre"
+        placeholder="Ingrese el nombre"
+        required
+      />
+    </div>
 
-  <label for="telefono">Teléfono:</label>
-  <input type="text" id="telefono" name="telefono"><br>
+    <div>
+      <label for="direccion">Dirección:</label>
+      <input
+        type="text"
+        id="direccion"
+        [(ngModel)]="nuevaEmpresa.direccion"
+        name="direccion"
+        placeholder="Ingrese la dirección"
+        required
+      />
+    </div>
 
-  <label for="contacto">Contacto:</label>
-  <input type="text" id="contacto" name="contacto"><br>
+    <div>
+      <label for="telefono">Teléfono:</label>
+      <input
+        type="text"
+        id="telefono"
+        [(ngModel)]="nuevaEmpresa.telefono"
+        name="telefono"
+        placeholder="Ingrese el teléfono"
+        required
+      />
+    </div>
 
-  <button type="submit">Guardar empresa</button>
-  <button type="button">Modificar empresa</button>
-</form>
+    <div>
+      <label for="contacto">Contacto:</label>
+      <input
+        type="text"
+        id="contacto"
+        [(ngModel)]="nuevaEmpresa.contacto"
+        name="contacto"
+        placeholder="Ingrese el nombre del contacto"
+        required
+      />
+    </div>
+
+    <button type="submit" class="btn-registrar">Registrar Empresa</button>
+  </form>
+
+  <hr />
+
+  <!-- Lista de empresas -->
+  <h2>Lista de Empresas</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>NIT</th>
+        <th>Nombre</th>
+        <th>Dirección</th>
+        <th>Teléfono</th>
+        <th>Contacto</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let empresa of empresas">
+        <td>{{ empresa.nit }}</td>
+        <td>{{ empresa.nombre }}</td>
+        <td>{{ empresa.direccion }}</td>
+        <td>{{ empresa.telefono }}</td>
+        <td>{{ empresa.contacto }}</td>
+        <td>
+          <button (click)="eliminarEmpresa(empresa.nit)" class="btn-eliminar">Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

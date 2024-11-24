@@ -1,20 +1,76 @@
-<div class="form-container">
-    <h2>Generar reporte</h2>
-    <form>
+<div class="reporte-container">
+  <!-- Título principal -->
+  <header class="header">
+    <h1>Gestión de Reportes</h1>
+    <p>Genera y visualiza reportes detallados de consumos por empresa.</p>
+  </header>
+
+  <!-- Formulario para generar reportes -->
+  <section class="form-section">
+    <h2>Generar Reporte</h2>
+    <form (submit)="generarReporte()">
       <div class="form-group">
-        <label for="fechaInicio">Fecha de inicio</label>
-        <input type="date" id="fechaInicio">
+        <label for="empresa">Empresa</label>
+        <select id="empresa" [(ngModel)]="reporte.empresa" name="empresa" required>
+          <option value="" disabled>Seleccione una empresa</option>
+          <option *ngFor="let empresa of empresas" [value]="empresa.nit">
+            {{ empresa.nombre }}
+          </option>
+        </select>
       </div>
+
       <div class="form-group">
-        <label for="fechaFin">Fecha fin</label>
-        <input type="date" id="fechaFin">
+        <label for="fechaInicio">Fecha Inicio</label>
+        <input
+          type="date"
+          id="fechaInicio"
+          [(ngModel)]="reporte.fechaInicio"
+          name="fechaInicio"
+          required
+        />
       </div>
+
       <div class="form-group">
-        <label for="nitEmpresa">NIT Empresa</label>
-        <input type="text" id="nitEmpresa" placeholder="NIT Empresa">
+        <label for="fechaFin">Fecha Fin</label>
+        <input
+          type="date"
+          id="fechaFin"
+          [(ngModel)]="reporte.fechaFin"
+          name="fechaFin"
+          required
+        />
       </div>
-      <div class="buttons">
-        <button type="submit">Generar reporte</button>
-      </div>
+
+      <button type="submit" class="btn-primary">Generar Reporte</button>
     </form>
-  </div>  
+  </section>
+
+  <!-- Tabla para mostrar reportes -->
+  <section class="table-section">
+    <h2>Reportes Generados</h2>
+    <table class="reporte-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Empresa</th>
+          <th>Fecha Inicio</th>
+          <th>Fecha Fin</th>
+          <th>Total Consumos</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let reporte of reportes">
+          <td>{{ reporte.id }}</td>
+          <td>{{ reporte.empresa.nombre }}</td>
+          <td>{{ reporte.fechaInicio | date: 'shortDate' }}</td>
+          <td>{{ reporte.fechaFin | date: 'shortDate' }}</td>
+          <td>{{ reporte.totalConsumos | currency }}</td>
+          <td>
+            <button class="btn-danger" (click)="eliminarReporte(reporte.id)">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+</div>

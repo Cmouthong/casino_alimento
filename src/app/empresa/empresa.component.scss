@@ -1,13 +1,78 @@
-form {
-  display: flex;
-  flex-direction: column;
-  width: 300px;
-}
+.empresa-container {
+  padding: 2rem;
+  font-family: Arial, sans-serif;
 
-input {
-  margin-bottom: 10px;
-}
+  h1 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: #5a67d8;
+  }
 
-button {
-  margin-right: 10px;
+  .formulario-empresa {
+    display: grid;
+    gap: 1rem;
+    max-width: 500px;
+    margin: 0 auto;
+
+    label {
+      font-weight: bold;
+    }
+
+    input {
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 1rem;
+
+      &:focus {
+        outline: none;
+        border-color: #5a67d8;
+        box-shadow: 0 0 5px rgba(90, 103, 216, 0.5);
+      }
+    }
+
+    .btn-registrar {
+      padding: 0.75rem;
+      background-color: #48bb78;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #38a169;
+      }
+    }
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 2rem;
+
+    th,
+    td {
+      padding: 0.75rem;
+      border: 1px solid #ccc;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f7fafc;
+    }
+
+    .btn-eliminar {
+      padding: 0.5rem;
+      background-color: #e53e3e;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #c53030;
+      }
+    }
+  }
 }
