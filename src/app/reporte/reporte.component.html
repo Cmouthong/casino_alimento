@@ -1,17 +1,17 @@
 <div class="reporte-container">
-  <!-- Título principal -->
+  <!-- Título -->
   <header class="header">
     <h1>Gestión de Reportes</h1>
-    <p>Genera y visualiza reportes detallados de consumos por empresa.</p>
+    <p>Genera y visualiza reportes de consumos por empresa.</p>
   </header>
 
   <!-- Formulario para generar reportes -->
   <section class="form-section">
     <h2>Generar Reporte</h2>
-    <form (submit)="generarReporte()">
+    <form (ngSubmit)="generarReporte()">
       <div class="form-group">
         <label for="empresa">Empresa</label>
-        <select id="empresa" [(ngModel)]="reporte.empresa" name="empresa" required>
+        <select id="empresa" [(ngModel)]="nuevoReporte.nitEmpresa" name="empresa" required>
           <option value="" disabled>Seleccione una empresa</option>
           <option *ngFor="let empresa of empresas" [value]="empresa.nit">
             {{ empresa.nombre }}
@@ -24,7 +24,7 @@
         <input
           type="date"
           id="fechaInicio"
-          [(ngModel)]="reporte.fechaInicio"
+          [(ngModel)]="nuevoReporte.fechaInicio"
           name="fechaInicio"
           required
         />
@@ -35,7 +35,7 @@
         <input
           type="date"
           id="fechaFin"
-          [(ngModel)]="reporte.fechaFin"
+          [(ngModel)]="nuevoReporte.fechaFin"
           name="fechaFin"
           required
         />
@@ -45,10 +45,10 @@
     </form>
   </section>
 
-  <!-- Tabla para mostrar reportes -->
+  <!-- Tabla de reportes -->
   <section class="table-section">
     <h2>Reportes Generados</h2>
-    <table class="reporte-table">
+    <table>
       <thead>
         <tr>
           <th>ID</th>
@@ -65,7 +65,7 @@
           <td>{{ reporte.empresa.nombre }}</td>
           <td>{{ reporte.fechaInicio | date: 'shortDate' }}</td>
           <td>{{ reporte.fechaFin | date: 'shortDate' }}</td>
-          <td>{{ reporte.totalConsumos | currency }}</td>
+          <td>${{ reporte.totalConsumos }}</td>
           <td>
             <button class="btn-danger" (click)="eliminarReporte(reporte.id)">Eliminar</button>
           </td>

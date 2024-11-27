@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class ConsumoService {
-  private apiUrl = '/consumos'; // Asegúrate de que coincida con la configuración de tu backend
+  private apiUrl = '/consumos';
 
   constructor(private http: HttpClient) {}
 
@@ -15,9 +15,9 @@ export class ConsumoService {
     return this.http.get<any[]>(`${this.apiUrl}`);
   }
 
-  // Registrar un nuevo consumo
-  registrarConsumo(consumo: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}`, consumo);
+  // Obtener consumos por empleado
+  obtenerConsumosPorEmpleado(cedula: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/empleado/${cedula}`);
   }
 
   // Obtener un consumo por ID
@@ -25,8 +25,23 @@ export class ConsumoService {
     return this.http.get<any>(`${this.apiUrl}/${id}`);
   }
 
+  // Crear un nuevo consumo
+  anadirConsumo(consumo: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}`, consumo);
+  }
+
+  // Actualizar un consumo existente
+  actualizarConsumo(id: number, consumo: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/${id}`, consumo);
+  }
+
   // Eliminar un consumo
   eliminarConsumo(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+
+  // Obtener el total de un consumo
+  obtenerTotalConsumo(id: number): Observable<number> {
+    return this.http.get<number>(`${this.apiUrl}/${id}/total`);
   }
 }

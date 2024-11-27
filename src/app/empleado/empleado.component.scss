@@ -23,10 +23,13 @@
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     margin-bottom: 2rem;
+    max-width: 600px;
+    margin: 0 auto;
 
     h2 {
       font-size: 1.5rem;
       margin-bottom: 1rem;
+      text-align: center;
     }
 
     .form-group {
@@ -52,16 +55,34 @@
       }
     }
 
-    .btn-primary {
-      background-color: #5a67d8;
-      color: white;
-      padding: 0.75rem 1.5rem;
+    .btn-primary,
+    .btn-secondary {
+      display: inline-block;
+      width: calc(50% - 0.5rem);
+      padding: 0.75rem;
+      font-size: 1rem;
       border: none;
       border-radius: 5px;
       cursor: pointer;
+      margin-top: 1rem;
+      text-align: center;
+    }
+
+    .btn-primary {
+      background-color: #5a67d8;
+      color: white;
 
       &:hover {
         background-color: #434190;
+      }
+    }
+
+    .btn-secondary {
+      background-color: #e53e3e;
+      color: white;
+
+      &:hover {
+        background-color: #c53030;
       }
     }
   }
@@ -98,13 +119,27 @@
       }
     }
 
+    .btn-primary,
     .btn-danger {
-      background-color: #e53e3e;
-      color: white;
       padding: 0.5rem 1rem;
       border: none;
       border-radius: 5px;
       cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    .btn-primary {
+      background-color: #5a67d8;
+      color: white;
+
+      &:hover {
+        background-color: #434190;
+      }
+    }
+
+    .btn-danger {
+      background-color: #e53e3e;
+      color: white;
 
       &:hover {
         background-color: #c53030;

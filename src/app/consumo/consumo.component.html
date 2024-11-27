@@ -1,111 +1,71 @@
 <div class="consumo-container">
-  <!-- Título principal -->
-  <header class="header">
-    <h1>Gestión de Consumos</h1>
-    <p>Registra y visualiza los consumos realizados por los empleados.</p>
-  </header>
+  <h1>Gestión de Consumos</h1>
+  <form>
+    <label for="cedulaEmpleado">Cédula Empleado:</label>
+    <input
+      type="text"
+      id="cedulaEmpleado"
+      [(ngModel)]="nuevoConsumo.cedulaEmpleado"
+      name="cedulaEmpleado"
+    />
 
-  <!-- Formulario para registrar consumo -->
-  <section class="form-section">
-    <h2>Registrar Consumo</h2>
-    <form (ngSubmit)="registrarConsumo()">
-      <div class="form-group">
-        <label for="cedulaEmpleado">Cédula del Empleado</label>
-        <input
-          type="text"
-          id="cedulaEmpleado"
-          [(ngModel)]="nuevoConsumo.cedulaEmpleado"
-          name="cedulaEmpleado"
-          placeholder="Ingrese la cédula"
-          required
-        />
-      </div>
+    <label for="fecha">Fecha:</label>
+    <input
+      type="date"
+      id="fecha"
+      [(ngModel)]="nuevoConsumo.fecha"
+      name="fecha"
+    />
 
-      <div class="form-group">
-        <label for="fecha">Fecha</label>
-        <input
-          type="date"
-          id="fecha"
-          [(ngModel)]="nuevoConsumo.fecha"
-          name="fecha"
-          required
-        />
-      </div>
+    <label for="plato">Plato:</label>
+    <select
+      id="plato"
+      [(ngModel)]="platoSeleccionado"
+      name="plato"
+    >
+      <option *ngFor="let plato of platos" [value]="plato.nombre">
+        {{ plato.nombre }}
+      </option>
+    </select>
 
-      <div class="form-group">
-        <label for="total">Total del Consumo</label>
-        <input
-          type="number"
-          id="total"
-          [(ngModel)]="nuevoConsumo.total"
-          name="total"
-          placeholder="Ingrese el total"
-          required
-        />
-      </div>
+    <label for="cantidad">Cantidad:</label>
+    <input
+      type="number"
+      id="cantidad"
+      [(ngModel)]="cantidad"
+      name="cantidad"
+      min="1"
+    />
 
-      <div class="form-group">
-        <label for="platos">Platos Consumidos</label>
-        <select
-          id="platos"
-          [(ngModel)]="platoSeleccionado"
-          name="platos"
-          required
-          (change)="agregarPlato()"
-        >
-          <option value="" disabled>Seleccione un plato</option>
-          <option *ngFor="let plato of platos" [value]="plato.id">
-            {{ plato.nombre }}
-          </option>
-        </select>
-      </div>
+    <button type="button" (click)="agregarPlato()">Añadir Plato</button>
+    <button type="button" (click)="anadirConsumo()">Añadir Consumo</button>
+  </form>
 
-      <!-- Lista de platos seleccionados -->
-      <ul class="platos-seleccionados">
-        <li *ngFor="let plato of nuevoConsumo.platosConsumidos">
-          {{ plato.nombre }}
-          <button type="button" (click)="eliminarPlato(plato.id)">❌</button>
-        </li>
-      </ul>
-
-      <button type="submit" class="btn-primary">Registrar Consumo</button>
-    </form>
-  </section>
-
-  <!-- Tabla para mostrar consumos registrados -->
-  <section class="table-section">
-    <h2>Consumos Registrados</h2>
-    <table class="consumo-table">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Cédula</th>
-          <th>Fecha</th>
-          <th>Total</th>
-          <th>Platos</th>
-          <th>Acciones</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let consumo of consumos">
-          <td>{{ consumo.id }}</td>
-          <td>{{ consumo.cedulaEmpleado }}</td>
-          <td>{{ consumo.fecha | date: 'shortDate' }}</td>
-          <td>{{ consumo.total | currency }}</td>
-          <td>
-            <ul>
-              <li *ngFor="let plato of consumo.platosConsumidos">
-                {{ plato.nombre }}
-              </li>
-            </ul>
-          </td>
-          <td>
-            <button class="btn-danger" (click)="eliminarConsumo(consumo.id)">
-              Eliminar
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </section>
+  <h2>Consumos Registrados</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Fecha</th>
+        <th>Empleado</th>
+        <th>Platos</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let consumo of consumos">
+        <td>{{ consumo.id }}</td>
+        <td>{{ consumo.fecha | date }}</td>
+        <td>{{ consumo.cedulaEmpleado }}</td>
+        <td>
+          <ul>
+            <li *ngFor="let plato of consumo.platosConsumidos">
+              {{ plato.nombrePlato }} - Cantidad: {{ plato.cantidad }}
+            </li>
+          </ul>
+        </td>
+        <td>{{ consumo.total | currency }}</td>
+      </tr>      
+    </tbody>
+  </table>
 </div>

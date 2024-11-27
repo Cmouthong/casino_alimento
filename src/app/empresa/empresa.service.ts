@@ -6,21 +6,22 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class EmpresaService {
-  private apiUrl = 'http://localhost:8080/empresas'; // URL base de la API
+  private apiUrl = '/empresas'; // URL base de la API
 
   constructor(private http: HttpClient) {}
 
-  // Obtener todas las empresas
   obtenerEmpresas(): Observable<any[]> {
     return this.http.get<any[]>(this.apiUrl);
   }
 
-  // Registrar una nueva empresa
   registrarEmpresa(empresa: any): Observable<any> {
     return this.http.post<any>(this.apiUrl, empresa);
   }
 
-  // Eliminar una empresa por su NIT
+  actualizarEmpresa(nit: string, empresa: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/${nit}`, empresa);
+  }
+
   eliminarEmpresa(nit: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${nit}`);
   }

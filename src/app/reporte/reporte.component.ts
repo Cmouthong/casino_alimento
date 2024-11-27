@@ -1,63 +1,86 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms'; // Para ngModel
-import { DatePipe } from '@angular/common'; // Para pipes como date y currency
+import { FormsModule } from '@angular/forms'; // Importar para usar ngModel
 import { ReporteService } from './reporte.service';
+import { EmpresaService } from '../empresa/empresa.service'; // Servicio para obtener empresas
 
 @Component({
   selector: 'app-reporte',
-  standalone: true,
   templateUrl: './reporte.component.html',
   styleUrls: ['./reporte.component.scss'],
-  imports: [CommonModule, FormsModule], // Importar los módulos necesarios
-  providers: [DatePipe], // Proveer DatePipe si es usado programáticamente
+  standalone: true,
+  imports: [CommonModule, FormsModule], // Importar módulos necesarios para el componente standalone
 })
 export class ReporteComponent implements OnInit {
-  empresas: any[] = []; // Lista de empresas
-  reportes: any[] = []; // Lista de reportes obtenidos del backend
-  reporte = {
-    empresa: '',
+  empresas: any[] = [];
+  reportes: any[] = [];
+  nuevoReporte = {
+    nitEmpresa: '',
     fechaInicio: '',
     fechaFin: '',
   };
 
-  constructor() {}
+  constructor(
+    private reporteService: ReporteService,
+    private empresaService: EmpresaService
+  ) {}
 
   ngOnInit(): void {
-    this.cargarEmpresas(); // Carga inicial de empresas
+    this.cargarEmpresas();
+    this.cargarReportes();
   }
 
   cargarEmpresas(): void {
-    // Lista de empresas simuladas o reemplazadas por datos reales del servicio
-    this.empresas = [
-      { nit: '123', nombre: 'Empresa 1' },
-      { nit: '456', nombre: 'Empresa 2' },
-      { nit: '789', nombre: 'Empresa 3' },
-    ];
+    this.empresaService.obtenerEmpresas().subscribe(
+      (data) => {
+        this.empresas = data;
+      },
+      (error) => console.error('Error al cargar las empresas:', error)
+    );
+  }
+
+  cargarReportes(): void {
+    this.reporteService.obtenerReportes().subscribe(
+      (data) => {
+        this.reportes = data;
+      },
+      (error) => console.error('Error al cargar los reportes:', error)
+    );
   }
 
   generarReporte(): void {
-    if (!this.reporte.empresa || !this.reporte.fechaInicio || !this.reporte.fechaFin) {
+    if (!this.nuevoReporte.nitEmpresa || !this.nuevoReporte.fechaInicio || !this.nuevoReporte.fechaFin) {
       alert('Por favor, completa todos los campos.');
       return;
     }
 
-    // Simulación de creación de un nuevo reporte
-    const nuevoReporte = {
-      id: this.reportes.length + 1,
-      empresa: this.empresas.find((e) => e.nit === this.reporte.empresa),
-      fechaInicio: this.reporte.fechaInicio,
-      fechaFin: this.reporte.fechaFin,
-      totalConsumos: Math.random() * 10000,
-    };
-
-    this.reportes.push(nuevoReporte);
-    alert('Reporte generado exitosamente.');
-    this.reporte = { empresa: '', fechaInicio: '', fechaFin: '' }; // Limpiar formulario
+    this.reporteService.crearReporte(this.nuevoReporte).subscribe(
+      (reporte) => {
+        this.reportes.push(reporte);
+        alert('Reporte generado exitosamente.');
+        this.resetFormulario();
+      },
+      (error) => console.error('Error al generar el reporte:', error)
+    );
   }
 
   eliminarReporte(id: number): void {
-    this.reportes = this.reportes.filter((reporte) => reporte.id !== id);
-    alert('Reporte eliminado exitosamente.');
+    if (confirm('¿Estás seguro de eliminar este reporte?')) {
+      this.reporteService.eliminarReporte(id).subscribe(
+        () => {
+          this.reportes = this.reportes.filter((reporte) => reporte.id !== id);
+          alert('Reporte eliminado exitosamente.');
+        },
+        (error) => console.error('Error al eliminar el reporte:', error)
+      );
+    }
+  }
+
+  resetFormulario(): void {
+    this.nuevoReporte = {
+      nitEmpresa: '',
+      fechaInicio: '',
+      fechaFin: '',
+    };
   }
 }

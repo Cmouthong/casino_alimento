@@ -1,75 +1,84 @@
 import { Component, OnInit } from '@angular/core';
 import { ConsumoService } from './consumo.service';
+import { PlatoService } from '../plato/plato.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-consumo',
-  standalone: true,
-  imports: [CommonModule, FormsModule],
   templateUrl: './consumo.component.html',
-  styleUrls: ['./consumo.component.scss'],
+  standalone: true,
+  imports: [CommonModule, FormsModule], // Importa los módulos necesarios
 })
 export class ConsumoComponent implements OnInit {
-  consumos: any[] = [];
-  platos: { id: number; nombre: string; precio: number }[] = [];
-  nuevoConsumo: {
-    cedulaEmpleado: string;
-    fecha: string;
-    total: number;
-    platosConsumidos: { id: number; nombre: string; precio: number }[];
-  } = {
-    cedulaEmpleado: '',
-    fecha: '',
-    total: 0,
-    platosConsumidos: [],
-  };
-  platoSeleccionado: number | null = null;
+  consumos: any[] = []; // Lista de consumos
+  consumo: any = { cedulaEmpleado: '', fecha: '', platosConsumidos: [] }; // Inicialización de consumo
+  nuevoConsumo: any = { cedulaEmpleado: '', fecha: '', platosConsumidos: [] }; // Nuevo consumo
+  platos: any[] = []; // Lista de platos disponibles
+  platoSeleccionado: string = ''; // Plato seleccionado
+  cantidad: number = 1; // Cantidad seleccionada
+  editando: boolean = false; // Estado de edición
 
-  constructor(private consumoService: ConsumoService) {}
+  constructor(
+    private consumoService: ConsumoService,
+    private platoService: PlatoService,
+    private http: HttpClient
+  ) {}
 
   ngOnInit(): void {
-    this.platos = [
-      { id: 1, nombre: 'Plato 1', precio: 10000 },
-      { id: 2, nombre: 'Plato 2', precio: 15000 },
-    ];
-    this.cargarConsumos();
+    this.obtenerConsumos();
+    this.platoService.obtenerPlatos().subscribe((data) => {
+      this.platos = data;
+    });
   }
 
-  cargarConsumos(): void {
+  obtenerConsumos(): void {
     this.consumoService.obtenerConsumos().subscribe((data) => {
       this.consumos = data;
     });
   }
 
   agregarPlato(): void {
-    const plato = this.platos.find((p) => p.id === this.platoSeleccionado);
-    if (plato) {
-      this.nuevoConsumo.platosConsumidos.push(plato);
-      this.nuevoConsumo.total += plato.precio;
+    if (this.platoSeleccionado && this.cantidad > 0) {
+      const plato = { nombrePlato: this.platoSeleccionado, cantidad: this.cantidad };
+      this.consumo.platosConsumidos.push(plato);
+      this.platoSeleccionado = '';
+      this.cantidad = 1;
     }
   }
 
-  eliminarPlato(id: number): void {
-    const index = this.nuevoConsumo.platosConsumidos.findIndex((p: { id: number }) => p.id === id);
-    if (index > -1) {
-      this.nuevoConsumo.total -= this.nuevoConsumo.platosConsumidos[index].precio;
-      this.nuevoConsumo.platosConsumidos.splice(index, 1);
+  guardarConsumo(): void {
+    if (this.editando) {
+      this.consumoService
+        .actualizarConsumo(this.consumo.id, this.consumo)
+        .subscribe(() => {
+          this.obtenerConsumos();
+          this.editando = false;
+        });
+    } else {
+      this.consumoService.anadirConsumo(this.consumo).subscribe(() => {
+        this.obtenerConsumos();
+      });
     }
+    this.consumo = { cedulaEmpleado: '', fecha: '', platosConsumidos: [] };
   }
 
-  registrarConsumo(): void {
-    this.consumoService.registrarConsumo(this.nuevoConsumo).subscribe((nuevoConsumo) => {
-      this.consumos.push(nuevoConsumo);
-      alert('Consumo registrado exitosamente.');
-      this.nuevoConsumo = { cedulaEmpleado: '', fecha: '', total: 0, platosConsumidos: [] };
+  anadirConsumo() {
+    this.http.post('/api/consumos', this.nuevoConsumo).subscribe((data: any) => {
+      this.consumos.push(data);
+      this.nuevoConsumo = { cedulaEmpleado: '', fecha: '', platosConsumidos: [] };
     });
+  }
+
+  editarConsumo(consumo: any): void {
+    this.consumo = { ...consumo };
+    this.editando = true;
   }
 
   eliminarConsumo(id: number): void {
     this.consumoService.eliminarConsumo(id).subscribe(() => {
-      this.consumos = this.consumos.filter((consumo) => consumo.id !== id);
-      alert('Consumo eliminado exitosamente.');
+      this.obtenerConsumos();
     });
   }
 }

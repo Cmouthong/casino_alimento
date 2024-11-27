@@ -1,8 +1,8 @@
 .reporte-container {
   padding: 2rem;
   font-family: 'Arial', sans-serif;
-  color: #2d3748;
 
+  /* Encabezado */
   .header {
     text-align: center;
     margin-bottom: 2rem;
@@ -18,16 +18,21 @@
     }
   }
 
+  /* Sección del formulario */
   .form-section {
     background: #f7fafc;
     padding: 1.5rem;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     margin-bottom: 2rem;
+    max-width: 600px;
+    margin: 0 auto;
 
     h2 {
       font-size: 1.5rem;
       margin-bottom: 1rem;
+      text-align: center;
+      color: #2d3748;
     }
 
     .form-group {
@@ -37,6 +42,7 @@
         display: block;
         font-weight: bold;
         margin-bottom: 0.5rem;
+        color: #2d3748;
       }
 
       input,
@@ -50,35 +56,62 @@
         &:focus {
           border-color: #5a67d8;
           outline: none;
+          box-shadow: 0 0 5px rgba(90, 103, 216, 0.5);
         }
       }
     }
 
-    .btn-primary {
-      background-color: #5a67d8;
-      color: white;
-      padding: 0.75rem 1.5rem;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 1rem;
+    .button-group {
+      display: flex;
+      gap: 1rem;
 
-      &:hover {
-        background-color: #434190;
+      .btn-primary {
+        flex: 1;
+        background-color: #5a67d8;
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1rem;
+        text-align: center;
+
+        &:hover {
+          background-color: #434190;
+        }
+      }
+
+      .btn-secondary {
+        flex: 1;
+        background-color: #e53e3e;
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1rem;
+        text-align: center;
+
+        &:hover {
+          background-color: #c53030;
+        }
       }
     }
   }
 
+  /* Sección de la tabla */
   .table-section {
     h2 {
       font-size: 1.5rem;
       margin-bottom: 1rem;
+      text-align: center;
+      color: #2d3748;
     }
 
     .reporte-table {
       width: 100%;
       border-collapse: collapse;
-      background: #fff;
+      background: #ffffff;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       border-radius: 8px;
       overflow: hidden;
@@ -88,16 +121,33 @@
         padding: 1rem;
         text-align: left;
         border-bottom: 1px solid #e2e8f0;
+        color: #2d3748;
       }
 
       th {
         background-color: #edf2f7;
         font-weight: bold;
-        color: #4a5568;
       }
 
-      tr:hover {
-        background-color: #f7fafc;
+      tr {
+        &:hover {
+          background-color: #f7fafc;
+        }
+      }
+
+      .btn-danger {
+        background-color: #e53e3e;
+        color: white;
+        padding: 0.5rem 1rem;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        text-align: center;
+
+        &:hover {
+          background-color: #c53030;
+        }
       }
     }
   }

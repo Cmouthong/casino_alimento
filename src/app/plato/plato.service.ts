@@ -6,12 +6,12 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class PlatoService {
-  private apiUrl = '/platos'; // Utiliza el proxy configurado para redirigir al backend
+  private apiUrl = '/platos';
 
   constructor(private http: HttpClient) {}
 
   // Obtener todos los platos
-  obtenerTodosLosPlatos(): Observable<any[]> {
+  obtenerPlatos(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}`);
   }
 
@@ -30,22 +30,22 @@ export class PlatoService {
     return this.http.post<any>(`${this.apiUrl}`, plato);
   }
 
-  // Actualizar un plato por su ID
-  actualizarPlato(id: number, detallesPlato: any): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/id/${id}`, detallesPlato);
+  // Actualizar un plato por ID
+  actualizarPlato(id: number, plato: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/id/${id}`, plato);
   }
 
-  // Actualizar un plato por su nombre
-  actualizarPlatoPorNombre(nombre: string, detallesPlato: any): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/nombre/${nombre}`, detallesPlato);
+  // Actualizar un plato por Nombre
+  actualizarPlatoPorNombre(nombre: string, plato: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/nombre/${nombre}`, plato);
   }
 
-  // Eliminar un plato por su ID
+  // Eliminar un plato por ID
   eliminarPlato(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/id/${id}`);
   }
 
-  // Eliminar un plato por su nombre
+  // Eliminar un plato por Nombre
   eliminarPlatoPorNombre(nombre: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/nombre/${nombre}`);
   }

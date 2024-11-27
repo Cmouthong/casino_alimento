@@ -5,55 +5,51 @@ import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-plato',
-  standalone: true,
-  imports: [CommonModule, FormsModule],
   templateUrl: './plato.component.html',
-  styleUrls: ['./plato.component.scss'],
+  standalone: true,
+  imports: [CommonModule, FormsModule], // Importa los módulos necesarios
 })
 export class PlatoComponent implements OnInit {
-  platos: any[] = []; // Lista de platos registrados
-  nuevoPlato: any = {
-    nombre: '',
-    precio: 0,
-    descripcion: '',
-    categoria: '',
-  };
+  platos: any[] = [];
+  plato: any = { nombre: '', precio: 0, descripcion: '' };
+  editando: boolean = false;
 
-  constructor() {}
+  constructor(private platoService: PlatoService) {}
 
   ngOnInit(): void {
-    // Simular carga inicial de platos
-    this.platos = [
-      {
-        id: 1,
-        nombre: 'Plato 1',
-        precio: 10.99,
-        descripcion: 'Descripción del plato 1',
-        categoria: 'Entrante',
-      },
-      {
-        id: 2,
-        nombre: 'Plato 2',
-        precio: 15.5,
-        descripcion: 'Descripción del plato 2',
-        categoria: 'Principal',
-      },
-    ];
+    this.obtenerPlatos();
   }
 
-  registrarPlato(): void {
-    const nuevoPlato = {
-      ...this.nuevoPlato,
-      id: this.platos.length + 1,
-    };
+  obtenerPlatos(): void {
+    this.platoService.obtenerPlatos().subscribe((data) => {
+      this.platos = data;
+    });
+  }
 
-    this.platos.push(nuevoPlato);
-    alert('Plato registrado exitosamente.');
-    this.nuevoPlato = { nombre: '', precio: 0, descripcion: '', categoria: '' }; // Limpiar formulario
+  guardarPlato(): void {
+    if (this.editando) {
+      this.platoService
+        .actualizarPlato(this.plato.id, this.plato)
+        .subscribe(() => {
+          this.obtenerPlatos();
+          this.editando = false;
+        });
+    } else {
+      this.platoService.anadirPlato(this.plato).subscribe(() => {
+        this.obtenerPlatos();
+      });
+    }
+    this.plato = { nombre: '', precio: 0, descripcion: '' };
+  }
+
+  editarPlato(plato: any): void {
+    this.plato = { ...plato };
+    this.editando = true;
   }
 
   eliminarPlato(id: number): void {
-    this.platos = this.platos.filter((plato) => plato.id !== id);
-    alert('Plato eliminado exitosamente.');
+    this.platoService.eliminarPlato(id).subscribe(() => {
+      this.obtenerPlatos();
+    });
   }
 }

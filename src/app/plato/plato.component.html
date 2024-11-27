@@ -1,97 +1,36 @@
-<div class="plato-container">
-    <!-- Título -->
-    <header class="header">
-      <h1>Gestión de Platos</h1>
-      <p>Registra y administra los platos disponibles en el sistema.</p>
-    </header>
-  
-    <!-- Formulario -->
-    <section class="form-section">
-      <h2>Registrar Plato</h2>
-      <form (ngSubmit)="registrarPlato()">
-        <div class="form-group">
-          <label for="nombre">Nombre del Plato</label>
-          <input
-            type="text"
-            id="nombre"
-            [(ngModel)]="nuevoPlato.nombre"
-            name="nombre"
-            placeholder="Ingrese el nombre"
-            required
-          />
-        </div>
-  
-        <div class="form-group">
-          <label for="precio">Precio</label>
-          <input
-            type="number"
-            id="precio"
-            [(ngModel)]="nuevoPlato.precio"
-            name="precio"
-            placeholder="Ingrese el precio"
-            required
-          />
-        </div>
-  
-        <div class="form-group">
-          <label for="descripcion">Descripción</label>
-          <textarea
-            id="descripcion"
-            [(ngModel)]="nuevoPlato.descripcion"
-            name="descripcion"
-            placeholder="Ingrese la descripción"
-            required
-          ></textarea>
-        </div>
-  
-        <div class="form-group">
-          <label for="categoria">Categoría</label>
-          <select
-            id="categoria"
-            [(ngModel)]="nuevoPlato.categoria"
-            name="categoria"
-            required
-          >
-            <option value="" disabled>Seleccione una categoría</option>
-            <option>Entrante</option>
-            <option>Principal</option>
-            <option>Postre</option>
-            <option>Bebida</option>
-          </select>
-        </div>
-  
-        <button type="submit" class="btn-primary">Registrar Plato</button>
-      </form>
-    </section>
-  
-    <!-- Tabla de platos -->
-    <section class="table-section">
-      <h2>Platos Registrados</h2>
-      <table class="plato-table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Precio</th>
-            <th>Descripción</th>
-            <th>Categoría</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let plato of platos">
-            <td>{{ plato.id }}</td>
-            <td>{{ plato.nombre }}</td>
-            <td>{{ plato.precio | currency }}</td>
-            <td>{{ plato.descripcion }}</td>
-            <td>{{ plato.categoria }}</td>
-            <td>
-              <button class="btn-danger" (click)="eliminarPlato(plato.id)">
-                Eliminar
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </section>
-  </div>  
+<div>
+  <h2>Gestión de Platos</h2>
+  <form (ngSubmit)="guardarPlato()">
+    <label for="nombre">Nombre:</label>
+    <input [(ngModel)]="plato.nombre" name="nombre" required />
+
+    <label for="precio">Precio:</label>
+    <input [(ngModel)]="plato.precio" name="precio" type="number" required />
+
+    <label for="descripcion">Descripción:</label>
+    <input [(ngModel)]="plato.descripcion" name="descripcion" />
+
+    <button type="submit">{{ editando ? 'Actualizar' : 'Añadir' }} Plato</button>
+  </form>
+
+  <h3>Platos Registrados</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Precio</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let plato of platos">
+        <td>{{ plato.nombre }}</td>
+        <td>{{ plato.precio }}</td>
+        <td>
+          <button (click)="editarPlato(plato)">Editar</button>
+          <button (click)="eliminarPlato(plato.id)">Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

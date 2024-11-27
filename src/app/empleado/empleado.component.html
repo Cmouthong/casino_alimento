@@ -7,8 +7,8 @@
 
   <!-- Formulario -->
   <section class="form-section">
-    <h2>Registrar Empleado</h2>
-    <form (ngSubmit)="registrarEmpleado()">
+    <h2>{{ editando ? 'Editar Empleado' : 'Registrar Empleado' }}</h2>
+    <form (ngSubmit)="editando ? actualizarEmpleado() : registrarEmpleado()">
       <div class="form-group">
         <label for="cedula">Cédula</label>
         <input
@@ -17,6 +17,7 @@
           [(ngModel)]="nuevoEmpleado.cedula"
           name="cedula"
           placeholder="Ingrese la cédula"
+          [readonly]="editando"
           required
         />
       </div>
@@ -57,7 +58,12 @@
         />
       </div>
 
-      <button type="submit" class="btn-primary">Registrar Empleado</button>
+      <button type="submit" class="btn-primary">
+        {{ editando ? 'Guardar Cambios' : 'Registrar Empleado' }}
+      </button>
+      <button *ngIf="editando" type="button" class="btn-secondary" (click)="cancelarEdicion()">
+        Cancelar
+      </button>
     </form>
   </section>
 
@@ -81,6 +87,9 @@
           <td>{{ empleado.empresaNIT }}</td>
           <td>{{ empleado.telefono }}</td>
           <td>
+            <button class="btn-primary" (click)="cargarEmpleado(empleado)">
+              Modificar
+            </button>
             <button class="btn-danger" (click)="eliminarEmpleado(empleado.cedula)">
               Eliminar
             </button>
