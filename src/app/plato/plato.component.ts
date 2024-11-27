@@ -11,7 +11,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class PlatoComponent implements OnInit {
   platos: any[] = [];
-  plato: any = { nombre: '', precio: 0, descripcion: '' };
+  plato: any = { nombre: '', precio: 0, descripcion: '',  categoria: '' };
   editando: boolean = false;
 
   constructor(private platoService: PlatoService) {}
@@ -39,7 +39,7 @@ export class PlatoComponent implements OnInit {
         this.obtenerPlatos();
       });
     }
-    this.plato = { nombre: '', precio: 0, descripcion: '' };
+    this.plato = { nombre: '', precio: 0, descripcion: '', categoria: '' };
   }
 
   editarPlato(plato: any): void {

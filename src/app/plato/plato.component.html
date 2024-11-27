@@ -10,6 +10,10 @@
     <label for="descripcion">Descripción:</label>
     <input [(ngModel)]="plato.descripcion" name="descripcion" />
 
+    <label for="categoria">Categoría:</label>
+<input [(ngModel)]="plato.categoria" name="categoria" placeholder="Categoría del plato" />
+
+
     <button type="submit">{{ editando ? 'Actualizar' : 'Añadir' }} Plato</button>
   </form>
 
@@ -19,6 +23,7 @@
       <tr>
         <th>Nombre</th>
         <th>Precio</th>
+        <th>Categoria</th>
         <th>Acciones</th>
       </tr>
     </thead>
@@ -26,6 +31,8 @@
       <tr *ngFor="let plato of platos">
         <td>{{ plato.nombre }}</td>
         <td>{{ plato.precio }}</td>
+        <td>{{ plato.categoria }}</td>
+        
         <td>
           <button (click)="editarPlato(plato)">Editar</button>
           <button (click)="eliminarPlato(plato.id)">Eliminar</button>
