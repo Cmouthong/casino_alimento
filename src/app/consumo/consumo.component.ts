@@ -55,35 +55,58 @@ export class ConsumoComponent implements OnInit {
   }
 
   guardarConsumo(): void {
+    // Validación de datos básicos
     if (!this.consumo.cedulaEmpleado || !this.consumo.fecha) {
       alert('Por favor, completa los datos del consumo.');
       return;
     }
-
+  
     if (this.consumo.platosConsumidos.length === 0) {
       alert('Debes añadir al menos un plato al consumo.');
       return;
     }
-
+  
+    // Actualización de un consumo existente
     if (this.editando) {
       this.consumoService
         .actualizarConsumo(this.consumo.id, this.consumo)
-        .subscribe(() => {
+        .subscribe(
+          () => {
+            alert('Consumo actualizado correctamente.');
+            this.obtenerConsumos(); // Actualizar la lista de consumos
+            this.resetearFormulario(); // Resetear el formulario
+          },
+          (error) => {
+            console.error('Error al actualizar el consumo:', error);
+            alert('Hubo un error al actualizar el consumo.');
+          }
+        );
+    } else {
+      // Lógica para añadir un nuevo consumo
+      this.consumoService.anadirConsumo(this.consumo).subscribe(
+        () => {
+          alert('Consumo añadido correctamente.');
           this.obtenerConsumos();
           this.resetearFormulario();
-        });
-    } else {
-      this.consumoService.anadirConsumo(this.consumo).subscribe(() => {
-        this.obtenerConsumos();
-        this.resetearFormulario();
-      });
+        },
+        (error) => {
+          console.error('Error al añadir el consumo:', error);
+          alert('Hubo un error al añadir el consumo.');
+        }
+      );
     }
   }
-
+    
   editarConsumo(consumo: any): void {
-    this.consumo = { ...consumo }; // Copia del consumo seleccionado
+    this.consumo = {
+      id: consumo.id,
+      cedulaEmpleado: consumo.cedulaEmpleado,
+      fecha: consumo.fecha,
+      platosConsumidos: [...consumo.platosConsumidos], // Clonar la lista de platos
+    };
     this.editando = true;
   }
+  
 
   eliminarConsumo(id: number): void {
     this.consumoService.eliminarConsumo(id).subscribe(() => {

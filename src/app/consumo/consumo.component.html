@@ -1,61 +1,33 @@
-<div class="consumo-container">
-  <h1>Gestión de Consumos</h1>
+<div>
+  <h2>Gestión de Consumos</h2>
   <form (ngSubmit)="guardarConsumo()">
-    <div class="form-group">
-      <label for="cedulaEmpleado">Cédula Empleado:</label>
-      <input
-        type="text"
-        id="cedulaEmpleado"
-        [(ngModel)]="consumo.cedulaEmpleado"
-        name="cedulaEmpleado"
-        required
-      />
-    </div>
+    <label for="cedulaEmpleado">Cédula Empleado:</label>
+    <input [(ngModel)]="consumo.cedulaEmpleado" name="cedulaEmpleado" required />
 
-    <div class="form-group">
-      <label for="fecha">Fecha:</label>
-      <input
-        type="date"
-        id="fecha"
-        [(ngModel)]="consumo.fecha"
-        name="fecha"
-        required
-      />
-    </div>
+    <label for="fecha">Fecha:</label>
+    <input [(ngModel)]="consumo.fecha" name="fecha" type="date" required />
 
-    <div class="form-group">
-      <label for="plato">Plato:</label>
-      <select id="plato" [(ngModel)]="platoSeleccionado" name="plato" required>
-        <option value="" disabled>Seleccione un plato</option>
-        <option *ngFor="let plato of platos" [value]="plato.nombre">
-          {{ plato.nombre }}
-        </option>
-      </select>
-    </div>
+    <label for="plato">Plato:</label>
+    <select [(ngModel)]="platoSeleccionado" name="plato">
+      <option *ngFor="let plato of platos" [value]="plato.nombre">
+        {{ plato.nombre }}
+      </option>
+    </select>
 
-    <div class="form-group">
-      <label for="cantidad">Cantidad:</label>
-      <input
-        type="number"
-        id="cantidad"
-        [(ngModel)]="cantidad"
-        name="cantidad"
-        min="1"
-        required
-      />
-    </div>
+    <label for="cantidad">Cantidad:</label>
+    <input [(ngModel)]="cantidad" name="cantidad" type="number" min="1" required />
 
     <div class="button-group">
       <button type="button" class="btn-primary" (click)="agregarPlato()">
         Añadir Plato
       </button>
-      <button type="submit" class="btn-primary">
+      <button type="button" class="btn-primary" (click)="guardarConsumo()">
         {{ editando ? 'Actualizar Consumo' : 'Guardar Consumo' }}
       </button>
     </div>
   </form>
 
-  <h2>Consumos Registrados</h2>
+  <h3>Consumos Registrados</h3>
   <table>
     <thead>
       <tr>
@@ -64,6 +36,7 @@
         <th>Empleado</th>
         <th>Platos</th>
         <th>Total</th>
+        <th>Acciones</th>
       </tr>
     </thead>
     <tbody>
@@ -79,6 +52,10 @@
           </ul>
         </td>
         <td>{{ consumo.total | currency }}</td>
+        <td>
+          <button (click)="editarConsumo(consumo)">Editar</button>
+          <button (click)="eliminarConsumo(consumo.id)">Eliminar</button>
+        </td>
       </tr>
     </tbody>
   </table>
