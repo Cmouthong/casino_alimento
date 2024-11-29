@@ -10,27 +10,22 @@ export class EmpleadoService {
 
   constructor(private http: HttpClient) {}
 
-  // Obtener todos los empleados
-  obtenerTodosLosEmpleados(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}`);
-  }
-
-  // Obtener un empleado por cédula
   obtenerEmpleadoPorCedula(cedula: string): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/${cedula}`);
   }
 
-  // Añadir un nuevo empleado
-  anadirEmpleado(empleado: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}`, empleado);
+  obtenerTodosLosEmpleados(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}`);
   }
 
-  // Actualizar un empleado existente
+  anadirEmpleadoConImagen(formData: FormData): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}`, formData);
+  }
+
   actualizarEmpleado(cedula: string, detallesEmpleado: any): Observable<any> {
     return this.http.put<any>(`${this.apiUrl}/${cedula}`, detallesEmpleado);
   }
 
-  // Eliminar un empleado
   eliminarEmpleado(cedula: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${cedula}`);
   }

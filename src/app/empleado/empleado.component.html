@@ -1,11 +1,9 @@
 <div class="empleado-container">
-  <!-- Título -->
   <header class="header">
     <h1>Gestión de Empleados</h1>
     <p>Registra y administra los empleados asociados a las empresas.</p>
   </header>
 
-  <!-- Formulario -->
   <section class="form-section">
     <h2>{{ editando ? 'Editar Empleado' : 'Registrar Empleado' }}</h2>
     <form (ngSubmit)="editando ? actualizarEmpleado() : registrarEmpleado()">
@@ -58,6 +56,11 @@
         />
       </div>
 
+      <div class="form-group">
+        <label for="imagen">Imagen</label>
+        <input type="file" id="imagen" (change)="seleccionarImagen($event)" />
+      </div>
+
       <button type="submit" class="btn-primary">
         {{ editando ? 'Guardar Cambios' : 'Registrar Empleado' }}
       </button>
@@ -67,7 +70,6 @@
     </form>
   </section>
 
-  <!-- Tabla de empleados -->
   <section class="table-section">
     <h2>Empleados Registrados</h2>
     <table class="empleado-table">

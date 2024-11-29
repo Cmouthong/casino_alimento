@@ -3,6 +3,8 @@ import { ConsumoService } from './consumo.service';
 import { PlatoService } from '../plato/plato.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { EmpleadoService } from '../empleado/empleado.service';
+
 
 @Component({
   selector: 'app-consumo',
@@ -11,16 +13,22 @@ import { FormsModule } from '@angular/forms';
   imports: [CommonModule, FormsModule],
 })
 export class ConsumoComponent implements OnInit {
-  consumos: any[] = []; // Lista de consumos registrados
-  consumo: any = { cedulaEmpleado: '', fecha: '', platosConsumidos: [] }; // Objeto de consumo actual
-  platos: any[] = []; // Lista de platos disponibles
-  platoSeleccionado: string = ''; // Plato seleccionado para añadir
-  cantidad: number = 1; // Cantidad seleccionada
-  editando: boolean = false; // Estado de edición
+  consumos: any[] = [];
+  consumo: any = { cedulaEmpleado: '', fecha: '', platosConsumidos: [] };
+  platos: any[] = [];
+  platoSeleccionado: string = '';
+  cantidad: number = 1;
+  editando: boolean = false;
 
+  // Propiedades para la validación del empleado
+  cedulaEmpleado: string = '';
+  empleadoNombre: string = ''; // Para almacenar el nombre del empleado validado
+  empleadoImagen: string = ''; // Para almacenar la URL de la imagen del empleado
+  empleadoValidado: boolean = false;
   constructor(
     private consumoService: ConsumoService,
-    private platoService: PlatoService
+    private platoService: PlatoService,
+    private empleadoService: EmpleadoService // Servicio de empleado
   ) {}
 
   ngOnInit(): void {
@@ -40,6 +48,23 @@ export class ConsumoComponent implements OnInit {
     });
   }
 
+  validarEmpleado(): void {
+    this.empleadoService.obtenerEmpleadoPorCedula(this.cedulaEmpleado).subscribe(
+      (data) => {
+        this.empleadoValidado = true;
+        this.empleadoNombre = data.nombre; // Asigna el nombre del empleado
+        this.empleadoImagen = `http://localhost:8080/empleados/${this.cedulaEmpleado}/imagen`; // URL de la imagen
+        this.consumo.cedulaEmpleado = this.cedulaEmpleado;
+      },
+      (error) => {
+        console.error('Error al validar el empleado:', error);
+        alert('No se encontró un empleado con la cédula proporcionada.');
+      }
+    );
+  }
+  
+  
+
   agregarPlato(): void {
     if (this.platoSeleccionado && this.cantidad > 0) {
       const plato = {
@@ -48,54 +73,47 @@ export class ConsumoComponent implements OnInit {
       };
       this.consumo.platosConsumidos.push(plato);
 
-      // Reinicia los campos de selección
       this.platoSeleccionado = '';
       this.cantidad = 1;
     }
   }
 
   guardarConsumo(): void {
-    // Validación de datos básicos
-    if (!this.consumo.cedulaEmpleado || !this.consumo.fecha) {
-      alert('Por favor, completa los datos del consumo.');
+    if (!this.consumo.cedulaEmpleado || !this.consumo.fecha || this.consumo.platosConsumidos.length === 0) {
+      alert('Por favor, completa todos los campos antes de guardar el consumo.');
       return;
     }
   
-    if (this.consumo.platosConsumidos.length === 0) {
-      alert('Debes añadir al menos un plato al consumo.');
-      return;
-    }
-  
-    // Actualización de un consumo existente
     if (this.editando) {
-      this.consumoService
-        .actualizarConsumo(this.consumo.id, this.consumo)
-        .subscribe(
-          () => {
-            alert('Consumo actualizado correctamente.');
-            this.obtenerConsumos(); // Actualizar la lista de consumos
-            this.resetearFormulario(); // Resetear el formulario
-          },
-          (error) => {
-            console.error('Error al actualizar el consumo:', error);
-            alert('Hubo un error al actualizar el consumo.');
-          }
-        );
-    } else {
-      // Lógica para añadir un nuevo consumo
-      this.consumoService.anadirConsumo(this.consumo).subscribe(
+      // Si se está editando un consumo existente
+      this.consumoService.actualizarConsumo(this.consumo.id, this.consumo).subscribe(
         () => {
-          alert('Consumo añadido correctamente.');
-          this.obtenerConsumos();
-          this.resetearFormulario();
+          alert('Consumo actualizado correctamente.');
+          this.obtenerConsumos(); // Recargar la lista de consumos
+          this.resetearFormulario(); // Reinicia el formulario
         },
         (error) => {
-          console.error('Error al añadir el consumo:', error);
-          alert('Hubo un error al añadir el consumo.');
+          console.error('Error al actualizar el consumo:', error);
+          alert('Hubo un error al actualizar el consumo.');
+        }
+      );
+    } else {
+      // Si es un consumo nuevo
+      this.consumoService.anadirConsumo(this.consumo).subscribe(
+        () => {
+          alert('Consumo guardado correctamente.');
+          this.obtenerConsumos(); // Recargar la lista de consumos
+          this.resetearFormulario(); // Reinicia el formulario
+        },
+        (error) => {
+          console.error('Error al guardar el consumo:', error);
+          alert('Hubo un error al guardar el consumo.');
         }
       );
     }
   }
+  
+
     
   editarConsumo(consumo: any): void {
     this.consumo = {
@@ -104,8 +122,9 @@ export class ConsumoComponent implements OnInit {
       fecha: consumo.fecha,
       platosConsumidos: [...consumo.platosConsumidos], // Clonar la lista de platos
     };
-    this.editando = true;
+    this.editando = true; // Cambiar el estado a edición
   }
+  
   
 
   eliminarConsumo(id: number): void {

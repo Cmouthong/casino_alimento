@@ -44,4 +44,10 @@ export class ConsumoService {
   obtenerTotalConsumo(id: number): Observable<number> {
     return this.http.get<number>(`${this.apiUrl}/${id}/total`);
   }
+
+  // Obtener un empleado por cédula
+obtenerEmpleadoPorCedula(cedula: string): Observable<any> {
+  return this.http.get<any>(`/empleados/${cedula}`);
+}
+
 }

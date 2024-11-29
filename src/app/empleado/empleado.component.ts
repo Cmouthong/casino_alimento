@@ -6,7 +6,7 @@ import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-empleado',
   standalone: true,
-  imports: [CommonModule, FormsModule], // Importa los módulos necesarios
+  imports: [CommonModule, FormsModule],
   templateUrl: './empleado.component.html',
   styleUrls: ['./empleado.component.scss'],
 })
@@ -18,7 +18,8 @@ export class EmpleadoComponent implements OnInit {
     empresaNIT: '',
     telefono: '',
   };
-  editando: boolean = false; // Indica si estamos editando un empleado
+  archivoImagen: File | null = null; // Archivo de la imagen seleccionada
+  editando: boolean = false;
 
   constructor(private empleadoService: EmpleadoService) {}
 
@@ -37,24 +38,35 @@ export class EmpleadoComponent implements OnInit {
     );
   }
 
-  registrarEmpleado(): void {
-    this.empleadoService.anadirEmpleado(this.nuevoEmpleado).subscribe(
-      (data) => {
-        this.empleados.push(data);
-        alert('Empleado registrado exitosamente.');
-        this.resetFormulario();
-      },
-      (error) => {
-        console.error('Error al registrar el empleado:', error);
-      }
-    );
+  seleccionarImagen(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      this.archivoImagen = file;
+    }
   }
 
-  cargarEmpleado(empleado: any): void {
-    // Cargar los datos del empleado seleccionado al formulario
-    this.nuevoEmpleado = { ...empleado };
-    this.editando = true;
+  registrarEmpleado(): void {
+    if (this.archivoImagen) {
+      const formData = new FormData();
+      formData.append('imagen', this.archivoImagen); // Adjuntar la imagen
+      formData.append('empleado', new Blob([JSON.stringify(this.nuevoEmpleado)], { type: 'application/json' }));
+  
+      this.empleadoService.anadirEmpleadoConImagen(formData).subscribe(
+        (data) => {
+          this.empleados.push(data);
+          alert('Empleado registrado exitosamente.');
+          this.resetFormulario();
+        },
+        (error) => {
+          console.error('Error al registrar el empleado:', error);
+          alert('Error al registrar Empleado'); // Mensaje de alerta en caso de error
+        }
+      );
+    } else {
+      alert('Por favor selecciona una imagen antes de registrar el empleado.');
+    }
   }
+  
 
   actualizarEmpleado(): void {
     this.empleadoService
@@ -68,7 +80,7 @@ export class EmpleadoComponent implements OnInit {
             this.empleados[index] = data; // Actualizar la lista local
           }
           alert('Empleado actualizado exitosamente.');
-          this.cancelarEdicion(); // Salir del modo edición
+          this.cancelarEdicion();
         },
         (error) => {
           console.error('Error al actualizar el empleado:', error);
@@ -92,6 +104,11 @@ export class EmpleadoComponent implements OnInit {
     }
   }
 
+  cargarEmpleado(empleado: any): void {
+    this.nuevoEmpleado = { ...empleado };
+    this.editando = true;
+  }
+
   cancelarEdicion(): void {
     this.resetFormulario();
     this.editando = false;
@@ -104,5 +121,6 @@ export class EmpleadoComponent implements OnInit {
       empresaNIT: '',
       telefono: '',
     };
+    this.archivoImagen = null;
   }
 }
