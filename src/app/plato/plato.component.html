@@ -1,4 +1,4 @@
-<div>
+<div class="platos-container">
   <h2>Gestión de Platos</h2>
   <form (ngSubmit)="guardarPlato()">
     <label for="nombre">Nombre:</label>
@@ -34,8 +34,8 @@
         <td>{{ plato.categoria }}</td>
         
         <td>
-          <button (click)="editarPlato(plato)">Editar</button>
-          <button (click)="eliminarPlato(plato.id)">Eliminar</button>
+          <button class="btn-primary" (click)="editarPlato(plato)">Editar</button>
+          <button class="btn-danger" (click)="eliminarPlato(plato.id)">Eliminar</button>
         </td>
       </tr>
     </tbody>

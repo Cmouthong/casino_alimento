@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-plato',
   templateUrl: './plato.component.html',
+  styleUrls: ['./plato.component.scss'],
   standalone: true,
   imports: [CommonModule, FormsModule], // Importa los módulos necesarios
 })

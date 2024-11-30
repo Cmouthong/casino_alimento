@@ -10,6 +10,7 @@
     h1 {
       font-size: 2rem;
       color: #5a67d8;
+      margin-bottom: 0.5rem;
     }
 
     p {
@@ -18,7 +19,7 @@
     }
   }
 
-  /* Sección del formulario */
+  /* Formulario */
   .form-section {
     background: #f7fafc;
     padding: 1.5rem;
@@ -30,9 +31,8 @@
 
     h2 {
       font-size: 1.5rem;
+      color: #4a5568;
       margin-bottom: 1rem;
-      text-align: center;
-      color: #2d3748;
     }
 
     .form-group {
@@ -42,11 +42,11 @@
         display: block;
         font-weight: bold;
         margin-bottom: 0.5rem;
-        color: #2d3748;
+        color: #4a5568;
       }
 
-      input,
-      select {
+      select,
+      input {
         width: 100%;
         padding: 0.8rem;
         border: 1px solid #cbd5e0;
@@ -61,57 +61,37 @@
       }
     }
 
-    .button-group {
-      display: flex;
-      gap: 1rem;
+    .btn-primary {
+      display: block;
+      width: 100%;
+      padding: 0.75rem;
+      font-size: 1rem;
+      color: white;
+      background-color: #5a67d8;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      text-align: center;
+      transition: background-color 0.3s ease;
 
-      .btn-primary {
-        flex: 1;
-        background-color: #5a67d8;
-        color: white;
-        padding: 0.75rem 1.5rem;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 1rem;
-        text-align: center;
-
-        &:hover {
-          background-color: #434190;
-        }
-      }
-
-      .btn-secondary {
-        flex: 1;
-        background-color: #e53e3e;
-        color: white;
-        padding: 0.75rem 1.5rem;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 1rem;
-        text-align: center;
-
-        &:hover {
-          background-color: #c53030;
-        }
+      &:hover {
+        background-color: #434190;
       }
     }
   }
 
-  /* Sección de la tabla */
+  /* Tabla de reportes */
   .table-section {
     h2 {
       font-size: 1.5rem;
+      color: #4a5568;
       margin-bottom: 1rem;
-      text-align: center;
-      color: #2d3748;
     }
 
-    .reporte-table {
+    table {
       width: 100%;
       border-collapse: collapse;
-      background: #ffffff;
+      background: white;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       border-radius: 8px;
       overflow: hidden;
@@ -121,7 +101,7 @@
         padding: 1rem;
         text-align: left;
         border-bottom: 1px solid #e2e8f0;
-        color: #2d3748;
+        color: #4a5568;
       }
 
       th {
@@ -129,21 +109,19 @@
         font-weight: bold;
       }
 
-      tr {
-        &:hover {
-          background-color: #f7fafc;
-        }
+      tr:hover {
+        background-color: #f7fafc;
       }
 
       .btn-danger {
-        background-color: #e53e3e;
+        padding: 0.6rem 1rem;
         color: white;
-        padding: 0.5rem 1rem;
+        background-color: #e53e3e;
         border: none;
         border-radius: 5px;
-        cursor: pointer;
         font-size: 0.9rem;
-        text-align: center;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
 
         &:hover {
           background-color: #c53030;

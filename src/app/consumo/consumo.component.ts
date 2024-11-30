@@ -9,6 +9,7 @@ import { EmpleadoService } from '../empleado/empleado.service';
 @Component({
   selector: 'app-consumo',
   templateUrl: './consumo.component.html',
+  styleUrls: ['./consumo.component.scss'],
   standalone: true,
   imports: [CommonModule, FormsModule],
 })

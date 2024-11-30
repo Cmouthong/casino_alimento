@@ -1,4 +1,4 @@
-<div>
+<div class="consumos-container">
   <h2>Gestión de Consumos</h2>
 
   <!-- Validación de empleado -->
@@ -70,9 +70,10 @@
         </td>
         <td>{{ consumo.total | currency }}</td>
         <td>
-          <button (click)="editarConsumo(consumo)">Editar</button>
-          <button (click)="eliminarConsumo(consumo.id)">Eliminar</button>
+          <button class="btn-primary" (click)="editarConsumo(consumo)">Editar</button>
+          <button class="btn-danger" (click)="eliminarConsumo(consumo.id)">Eliminar</button>
         </td>
+        
       </tr>
     </tbody>
   </table>
