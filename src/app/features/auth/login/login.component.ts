@@ -108,7 +108,7 @@ export class LoginComponent implements OnInit {
         this.router.navigate(['/cajero/dashboard']);
         break;
       case 'CONTADOR':
-        this.router.navigate(['/contador/dashboard']);
+        this.router.navigate(['/contador/reportes']);
         break;
       case 'CONSUMIDOR':
         this.router.navigate(['/consumidor/dashboard']);

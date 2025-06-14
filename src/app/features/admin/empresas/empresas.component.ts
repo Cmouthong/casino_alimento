@@ -35,7 +35,6 @@ import { Empresa } from '../../../core/models/empresa.model';
                   class="form-control"
                   id="nit"
                   formControlName="nit"
-                  [readonly]="empresaForm.get('nit')?.value"
                 >
                 <div class="invalid-feedback" *ngIf="empresaForm.get('nit')?.errors?.['required'] && empresaForm.get('nit')?.touched">
                   El NIT es requerido
