@@ -1,0 +1,75 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#" (click)="inicio(); $event.preventDefault()">Manaos Connect</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto">
+        <ng-container *ngIf="currentUser">
+          <!-- Admin Menu -->
+          <ng-container *ngIf="showAdminMenu">
+            <li class="nav-item">
+              <a class="nav-link" href="#" (click)="registroEmpresa(); $event.preventDefault()">
+                <i class="bi bi-building"></i> Empresas
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#" (click)="plato(); $event.preventDefault()">
+                <i class="bi bi-egg-fried"></i> Platos
+              </a>
+            </li>
+          </ng-container>
+
+          <!-- Cajero Menu -->
+          <ng-container *ngIf="showCajeroMenu">
+            <li class="nav-item">
+              <a class="nav-link" href="#" (click)="registrarConsumidor(); $event.preventDefault()">
+                <i class="bi bi-person-plus"></i> Registrar Consumidor
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#" (click)="consumo(); $event.preventDefault()">
+                <i class="bi bi-cart"></i> Consumos
+              </a>
+            </li>
+          </ng-container>
+
+          <!-- Contador Menu -->
+          <ng-container *ngIf="showContadorMenu">
+            <li class="nav-item">
+              <a class="nav-link" href="#" (click)="reporte(); $event.preventDefault()">
+                <i class="bi bi-file-earmark-text"></i> Reportes
+              </a>
+            </li>
+          </ng-container>
+
+          <!-- Consumidor Menu -->
+          <ng-container *ngIf="showConsumidorMenu">
+            <li class="nav-item">
+              <a class="nav-link" href="#" (click)="consumo(); $event.preventDefault()">
+                <i class="bi bi-cart"></i> Mis Consumos
+              </a>
+            </li>
+          </ng-container>
+        </ng-container>
+      </ul>
+      <div class="d-flex align-items-center">
+        <ng-container *ngIf="currentUser">
+          <span class="text-light me-3">
+            <i class="bi bi-person-circle"></i>
+            {{ currentUser.nombre }} {{ currentUser.apellido }}
+            ({{ getRoleName() }})
+          </span>
+          <button class="btn btn-outline-light" (click)="logout()">
+            <i class="bi bi-box-arrow-right"></i> Cerrar Sesión
+          </button>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="container mt-4">
+  <router-outlet></router-outlet>
+</div> 

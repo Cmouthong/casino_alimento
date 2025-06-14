@@ -1,20 +1,76 @@
-<div class="home-container">
-  <div class="content">
+<div class="app-container">
+  <div class="content" [class.full-width]="!showSidebar">
     <router-outlet></router-outlet>
   </div>
-  <nav class="sidebar">
-    <ul>
-      <li> <a (click)="inicio()">Inicio</a></li>
-      <li><a (click)="registroEmpresa()">Registrar Empresa</a></li>
-      <li> <a (click)="registroEmpleado()">Registrar Empleado</a></li>
-      <li> <a (click)="consumo()">Registrar Consumo</a></li>
-      <li> <a (click)="plato()">Registrar Plato</a></li>
-      <li> <a (click)="reporte()">Generar Reporte</a></li>
-    </ul>
-  </nav>
 
+  <nav class="sidebar" *ngIf="showSidebar && isAuthenticated">
+    <div class="user-info" *ngIf="currentUser">
+      <div class="user-avatar">
+        <i class="fas fa-user"></i>
+      </div>
+      <div class="user-details">
+        <p class="user-name">{{ currentUser.nombre || 'Usuario' }}</p>
+        <p class="user-role">{{ getRoleName() }}</p>
+        <p class="user-cedula">C.C: {{ currentUser.cedula }}</p>
+      </div>
+    </div>
+
+    <ul class="nav-menu">
+      <li>
+        <a (click)="inicio()" class="nav-item">
+          <i class="fas fa-home"></i>
+          <span>Inicio</span>
+        </a>
+      </li>
+
+      <!-- Opciones para ADMIN -->
+      <li *ngIf="canAccess('empresa')">
+        <a (click)="registroEmpresa()" class="nav-item">
+          <i class="fas fa-building"></i>
+          <span>Registrar Empresa</span>
+        </a>
+      </li>
+
+      <li *ngIf="canAccess('plato')">
+        <a (click)="plato()" class="nav-item">
+          <i class="fas fa-utensils"></i>
+          <span>Registrar Plato</span>
+        </a>
+      </li>
+
+      <!-- Opciones para ADMIN y CAJERO -->
+      <li *ngIf="canAccess('consumidor')">
+        <a (click)="registrarConsumidor()" class="nav-item">
+          <i class="fas fa-user-plus"></i>
+          <span>Registrar Consumidor</span>
+        </a>
+      </li>
+
+      <li *ngIf="canAccess('consumo')">
+        <a (click)="consumo()" class="nav-item">
+          <i class="fas fa-shopping-cart"></i>
+          <span>Registrar Consumo</span>
+        </a>
+      </li>
+
+      <!-- Opciones para ADMIN y CONTADOR -->
+      <li *ngIf="canAccess('reporte')">
+        <a (click)="reporte()" class="nav-item">
+          <i class="fas fa-chart-bar"></i>
+          <span>Generar Reporte</span>
+        </a>
+      </li>
+    </ul>
+
+    <div class="sidebar-footer">
+      <button (click)="logout()" class="logout-btn">
+        <i class="fas fa-sign-out-alt"></i>
+        <span>Cerrar Sesión</span>
+      </button>
+    </div>
+  </nav>
 </div>
 
-<footer>
-  <p>&copy; 2024 Casino Alimento. Todos los derechos reservados.</p>
+<footer *ngIf="showSidebar && isAuthenticated">
+  <p>&copy; 2025 Manaos Connect. Todos los derechos reservados.</p>
 </footer>

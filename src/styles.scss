@@ -1,1 +1,95 @@
 /* You can add global styles to this file, and also import other style files */
+
+/* Importaciones de Bootstrap y Toastr */
+@import 'bootstrap/scss/bootstrap';
+@import 'ngx-toastr/toastr';
+
+/* Variables globales */
+:root {
+  --primary-color: #007bff;
+  --secondary-color: #6c757d;
+  --success-color: #28a745;
+  --danger-color: #dc3545;
+  --warning-color: #ffc107;
+  --info-color: #17a2b8;
+  --light-color: #f8f9fa;
+  --dark-color: #343a40;
+}
+
+/* Estilos globales */
+body {
+  background-color: var(--light-color);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.container {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+/* Estilos para cards */
+.card {
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  border: none;
+  margin-bottom: 1rem;
+}
+
+.card-header {
+  background-color: var(--light-color);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+/* Estilos para botones */
+.btn {
+  margin-right: 0.5rem;
+  &:last-child {
+    margin-right: 0;
+  }
+}
+
+/* Estilos para formularios */
+.form-control:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* Estilos para tablas */
+.table {
+  th {
+    background-color: var(--light-color);
+  }
+  
+  td, th {
+    vertical-align: middle;
+  }
+}
+
+/* Estilos para notificaciones */
+.toast {
+  opacity: 1 !important;
+}
+
+/* Estilos para navegación */
+.navbar {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos para contenedores responsivos */
+.table-responsive {
+  margin-bottom: 1rem;
+}
+
+/* Estilos para botones de acción */
+.btn-action {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+}
+
+/* Estilos para cards de dashboard */
+.dashboard-card {
+  transition: transform 0.2s;
+  
+  &:hover {
+    transform: translateY(-5px);
+  }
+}

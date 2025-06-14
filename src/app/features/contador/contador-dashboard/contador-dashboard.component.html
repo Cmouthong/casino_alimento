@@ -1,0 +1,14 @@
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body text-center">
+          <h1 class="display-4">Panel de Contador</h1>
+          <p class="lead" *ngIf="currentUser">
+            Bienvenido, {{ currentUser.nombre }} ({{ getRoleName() }})
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 
