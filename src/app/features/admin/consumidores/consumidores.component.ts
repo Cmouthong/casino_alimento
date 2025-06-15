@@ -267,6 +267,10 @@ export class ConsumidoresComponent implements OnInit {
   }
 
   private crearConsumidorSubmit(consumidor: any): void {
+    if (this.consumidores.some(c => c.cedula === consumidor.cedula)) {
+      this.notificationService.showError('Ya existe un consumidor con esa cédula.');
+      return;
+    }
     const formData = new FormData();
     formData.append('cedula', consumidor.cedula);
     formData.append('nombre', consumidor.nombre);

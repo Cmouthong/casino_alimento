@@ -1,0 +1,168 @@
+<!-- Tabla de usuarios activos -->
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Gestión de Usuarios</h2>
+    <button class="btn btn-primary" (click)="abrirCrear()">
+      <i class="bi bi-plus-circle"></i> Nuevo Usuario
+    </button>
+  </div>
+
+  <!-- Tabla de usuarios activos -->
+  <div class="card mb-4">
+    <div class="card-header">
+      <h3 class="card-title">Usuarios Activos</h3>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Cédula</th>
+              <th>Nombre</th>
+              <th>Email</th>
+              <th>Teléfono</th>
+              <th>Rol</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let usuario of usuariosActivos">
+              <td>{{usuario.cedula}}</td>
+              <td>{{usuario.nombre}}</td>
+              <td>{{usuario.email}}</td>
+              <td>{{usuario.telefono}}</td>
+              <td>{{usuario.rol}}</td>
+              <td>
+                <button class="btn btn-sm btn-primary me-2" (click)="abrirEditar(usuario)">
+                  <i class="bi bi-pencil"></i> Editar
+                </button>
+                <button class="btn btn-sm btn-danger" (click)="desactivarUsuario(usuario)">
+                  <i class="bi bi-trash"></i> Desactivar
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabla de usuarios desactivados -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">Usuarios Desactivados</h3>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Cédula</th>
+              <th>Nombre</th>
+              <th>Email</th>
+              <th>Teléfono</th>
+              <th>Rol</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let usuario of usuariosDesactivados">
+              <td>{{usuario.cedula}}</td>
+              <td>{{usuario.nombre}}</td>
+              <td>{{usuario.email}}</td>
+              <td>{{usuario.telefono}}</td>
+              <td>{{usuario.rol}}</td>
+              <td>
+                <button class="btn btn-sm btn-success" (click)="reactivarUsuario(usuario)">
+                  <i class="bi bi-arrow-counterclockwise"></i> Reactivar
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de edición -->
+<div class="modal fade" [class.show]="showEditModal" [style.display]="showEditModal ? 'block' : 'none'">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Editar Usuario</h5>
+        <button type="button" class="btn-close" (click)="closeEditModal()"></button>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="guardarEdicion()">
+          <div class="mb-3">
+            <label class="form-label">Nombre</label>
+            <input type="text" class="form-control" [(ngModel)]="editUsuario.nombre" name="nombre" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="email" class="form-control" [(ngModel)]="editUsuario.email" name="email" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Teléfono</label>
+            <input type="tel" class="form-control" [(ngModel)]="editUsuario.telefono" name="telefono" required>
+          </div>
+          <div class="mb-3">
+            <div class="form-check">
+              <input type="checkbox" class="form-check-input" [(ngModel)]="cambiarPassword" name="cambiarPassword">
+              <label class="form-check-label">Cambiar contraseña</label>
+            </div>
+          </div>
+          <div class="mb-3" *ngIf="cambiarPassword">
+            <label class="form-label">Nueva contraseña</label>
+            <input type="password" class="form-control" [(ngModel)]="editUsuario.password" name="password" required>
+          </div>
+          <div class="text-end">
+            <button type="button" class="btn btn-secondary me-2" (click)="closeEditModal()">Cancelar</button>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de creación -->
+<div class="modal fade" [class.show]="showCreateModal" [style.display]="showCreateModal ? 'block' : 'none'">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Nuevo Usuario</h5>
+        <button type="button" class="btn-close" (click)="closeCreateModal()"></button>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="crearUsuario()">
+          <div class="mb-3">
+            <label class="form-label">Cédula</label>
+            <input type="text" class="form-control" [(ngModel)]="nuevoUsuario.cedula" name="cedula" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Nombre</label>
+            <input type="text" class="form-control" [(ngModel)]="nuevoUsuario.nombre" name="nombre" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="email" class="form-control" [(ngModel)]="nuevoUsuario.email" name="email" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Teléfono</label>
+            <input type="tel" class="form-control" [(ngModel)]="nuevoUsuario.telefono" name="telefono" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Contraseña</label>
+            <input type="password" class="form-control" [(ngModel)]="nuevoUsuario.password" name="password" required>
+          </div>
+          <div class="text-end">
+            <button type="button" class="btn btn-secondary me-2" (click)="closeCreateModal()">Cancelar</button>
+            <button type="submit" class="btn btn-primary">Crear</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div> 

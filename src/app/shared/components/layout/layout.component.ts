@@ -87,7 +87,7 @@ import { User, UserRole } from '../../../core/interfaces/user.interface';
       <!-- Footer -->
       <footer class="bg-light py-3 mt-auto">
         <div class="container text-center">
-          <span class="text-muted">© 2024 Casino Alimento. Todos los derechos reservados.</span>
+          <span class="text-muted">© 2025 Casino Alimento. Todos los derechos reservados.</span>
         </div>
       </footer>
     </div>

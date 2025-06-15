@@ -133,7 +133,7 @@ import { Empresa } from '../../../core/models/empresa.model';
                 <button class="btn btn-sm btn-danger" (click)="eliminarEmpresa(empresa.nit)">
                   Eliminar
                 </button>
-</td>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -195,41 +195,29 @@ export class EmpresasComponent implements OnInit {
     if (this.empresaForm.invalid) {
       return;
     }
-
     const empresa: Empresa = this.empresaForm.value;
     const nit = empresa.nit;
-
+    // Validación de NIT único
     if (this.empresas.some(e => e.nit === nit)) {
-      // Actualizar empresa existente
-      this.empresaService.update(nit, empresa).subscribe({
-        next: () => {
-          this.notificationService.showSuccess('Empresa actualizada exitosamente');
-          this.cargarEmpresas();
-          this.cancelar();
-        },
-        error: (error) => {
-          this.notificationService.showError('Error al actualizar la empresa');
-          console.error('Error al actualizar empresa:', error);
-        }
-      });
-    } else {
-      // Crear nueva empresa
-      this.empresaService.create(empresa).subscribe({
-        next: (resp) => {
-          this.notificationService.showSuccess('Empresa creada exitosamente');
-          this.cargarEmpresas();
-          this.cancelar();
-        },
-        error: (error) => {
-          let mensaje = 'Error al crear la empresa';
-          if (error instanceof SyntaxError || (error.error && typeof error.error === 'string' && error.error.startsWith('<!DOCTYPE'))) {
-            mensaje += ': El backend no está devolviendo un JSON válido. Por favor, revisa la respuesta del servidor.';
-          }
-          this.notificationService.showError(mensaje);
-          console.error('Error al crear empresa:', error);
-        }
-      });
+      this.notificationService.showError('Ya existe una empresa con ese NIT.');
+      return;
     }
+    // Crear nueva empresa
+    this.empresaService.create(empresa).subscribe({
+      next: (resp) => {
+        this.notificationService.showSuccess('Empresa creada exitosamente');
+        this.cargarEmpresas();
+        this.cancelar();
+      },
+      error: (error) => {
+        let mensaje = 'Error al crear la empresa';
+        if (error instanceof SyntaxError || (error.error && typeof error.error === 'string' && error.error.startsWith('<!DOCTYPE'))) {
+          mensaje += ': El backend no está devolviendo un JSON válido. Por favor, revisa la respuesta del servidor.';
+        }
+        this.notificationService.showError(mensaje);
+        console.error('Error al crear empresa:', error);
+      }
+    });
   }
 
   eliminarEmpresa(nit: string): void {

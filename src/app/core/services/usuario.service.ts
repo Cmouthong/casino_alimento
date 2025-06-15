@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from '../interfaces/user.interface';
 import { environment } from '../../../environments/environment';
-
+import { RegistroUsuarioRequest } from '../interfaces/registro-usuario-request';
 
 @Injectable({ providedIn: 'root' })
 export class UsuarioService {
@@ -15,25 +15,23 @@ export class UsuarioService {
     return this.http.get<User[]>(this.apiUrl);
   }
 
-  delete(cedula: string) {
-    return this.http.delete(`${this.apiUrl}/${cedula}`);
+  getEliminados(): Observable<User[]> {
+    return this.http.get<User[]>(`${this.apiUrl}/desactivados`);
   }
 
-  update(cedula: string, data: Partial<User>) {
-    return this.http.put(`${this.apiUrl}/${cedula}`, data);
-  }
-
-  reactivar(cedula: string) {
-    return this.http.put(`${this.apiUrl}/reactivar/${cedula}`, {});
-  }
-
-  create(data: any) {
+  create(data: RegistroUsuarioRequest): Observable<any> {
     return this.http.post(`${this.apiUrl}/registrar`, data);
   }
 
-  getEliminados() {
-    return this.http.get<any[]>(`${this.apiUrl}/eliminados`);
+  update(cedula: string, data: { nombre: string; email: string; telefono: string; password?: string }): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${cedula}`, data);
   }
 
-  // Otros métodos (editar, desactivar, reactivar) se agregarán después
-}  
+  delete(cedula: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${cedula}`);
+  }
+
+  reactivar(cedula: string): Observable<any> {
+    return this.http.put(`${this.apiUrl}/reactivar/${cedula}`, {});
+  }
+}
