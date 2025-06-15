@@ -73,8 +73,6 @@ export class ContadorDashboardComponent implements OnInit, OnDestroy {
         return 'Cajero';
       case UserRole.CONTADOR:
         return 'Contador';
-      case UserRole.CONSUMIDOR:
-        return 'Consumidor';
       default:
         return '';
     }

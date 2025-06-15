@@ -11,6 +11,10 @@ export const ADMIN_ROUTES: Routes = [
     loadComponent: () => import('./empresas/empresas.component').then(m => m.EmpresasComponent)
   },
   {
+    path: 'consumidores',
+    loadComponent: () => import('./consumidores/consumidores.component').then(m => m.ConsumidoresComponent)
+  },
+  {
     path: 'platos',
     loadComponent: () => import('./platos/platos.component').then(m => m.PlatosComponent)
   },

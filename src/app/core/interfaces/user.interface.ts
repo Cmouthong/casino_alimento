@@ -1,23 +1,23 @@
 export enum UserRole {
   ADMIN = 'ADMIN',
   CAJERO = 'CAJERO',
-  CONTADOR = 'CONTADOR',
-  CONSUMIDOR = 'CONSUMIDOR'
+  CONTADOR = 'CONTADOR'
 }
 
 export interface User {
-  cedula: string;
+  id: number;
   nombre: string;
   email: string;
+  cedula: string;
   telefono: string;
   rol: UserRole;
   token?: string;
+  activo: boolean;
+  createdAt: Date;
+  updatedAt: Date;
 }
+
 export interface AuthResponse {
   token: string;
-  cedula: string;
-  nombre: string;
-  email: string;
-  telefono: string;
-  rol: string;
+  user: User;
 } 

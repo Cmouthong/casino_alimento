@@ -1,7 +1,8 @@
 import { Injectable, PLATFORM_ID, Inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, tap, map } from 'rxjs';
-import { User, UserRole, AuthResponse } from '../interfaces/user.interface';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { BehaviorSubject, Observable, tap, map, catchError, throwError } from 'rxjs';
+import { User, UserRole } from '../interfaces/user.interface';
+import { AuthResponse } from '../interfaces/auth.interface';
 import { environment } from '../../../environments/environment';
 import { isPlatformBrowser } from '@angular/common';
 
@@ -9,8 +10,9 @@ import { isPlatformBrowser } from '@angular/common';
   providedIn: 'root'
 })
 export class AuthService {
+  private apiUrl = environment.apiUrl + '/auth';
   private currentUserSubject = new BehaviorSubject<User | null>(null);
-  currentUser$ = this.currentUserSubject.asObservable();
+  public currentUser$ = this.currentUserSubject.asObservable();
   private isBrowser: boolean;
 
   constructor(
@@ -26,12 +28,19 @@ export class AuthService {
           if (parsed && typeof parsed === 'object') {
             this.currentUserSubject.next(parsed);
           } else {
-            localStorage.removeItem('currentUser');
+            this.clearStorage();
           }
         } catch (e) {
-          localStorage.removeItem('currentUser');
+          this.clearStorage();
         }
       }
+    }
+  }
+
+  private clearStorage(): void {
+    if (this.isBrowser) {
+      localStorage.removeItem('currentUser');
+      localStorage.removeItem('token');
     }
   }
 
@@ -44,16 +53,20 @@ export class AuthService {
   }
 
   login(cedula: string, password: string): Observable<User> {
-    return this.http.post<AuthResponse>(`/auth/login`, { cedula, password })
+    return this.http.post<AuthResponse>(`${this.apiUrl}/login`, { cedula, password })
       .pipe(
         map((resp: AuthResponse) => {
           const user: User = {
+            id: resp.id,
             cedula: resp.cedula,
             nombre: resp.nombre,
             email: resp.email,
             telefono: resp.telefono,
-            rol: resp.rol as UserRole,
-            token: resp.token
+            rol: resp.rol,
+            token: resp.token,
+            activo: resp.activo,
+            createdAt: new Date(resp.createdAt),
+            updatedAt: new Date(resp.updatedAt)
           };
           return user;
         }),
@@ -65,14 +78,16 @@ export class AuthService {
             }
           }
           this.currentUserSubject.next(user);
+        }),
+        catchError((error: HttpErrorResponse) => {
+          this.clearStorage();
+          return throwError(() => error);
         })
       );
   }
 
   logout(): void {
-    if (this.isBrowser) {
-      localStorage.removeItem('currentUser');
-    }
+    this.clearStorage();
     this.currentUserSubject.next(null);
   }
 
@@ -84,7 +99,7 @@ export class AuthService {
   }
 
   isAuthenticated(): boolean {
-    return !!this.currentUserSubject.value;
+    return !!this.currentUserSubject.value?.token;
   }
 
   hasRole(role: UserRole): boolean {

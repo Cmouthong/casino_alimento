@@ -1,8 +1,15 @@
 export interface Consumidor {
   cedula: string;
   nombre: string;
-  apellido: string;
   telefono: string;
-  email: string;
-  imagen?: string;
+  empresaNIT: string;
+  rutaImagen?: string;
+}
+
+export interface ConsumidorResponseDTO {
+  cedula: string;
+  nombre: string;
+  telefono: string;
+  empresaNIT: string;
+  rutaImagen?: string;
 } 

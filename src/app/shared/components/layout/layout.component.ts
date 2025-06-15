@@ -27,13 +27,23 @@ import { User, UserRole } from '../../../core/interfaces/user.interface';
                 <!-- Admin Menu -->
                 <ng-container *ngIf="currentUser.rol === UserRole.ADMIN">
                   <li class="nav-item">
-                    <a class="nav-link" href="#" (click)="registroEmpresa(); $event.preventDefault()">
-                      Empresas
+                    <a class="nav-link" href="#" (click)="gestionEmpresas(); $event.preventDefault()">
+                      Gestión de Empresas
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="#" (click)="plato(); $event.preventDefault()">
-                      Platos
+                    <a class="nav-link" href="#" (click)="gestionConsumidores(); $event.preventDefault()">
+                      Gestión de Consumidores
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#" (click)="gestionPlatos(); $event.preventDefault()">
+                      Gestión de Platos
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#" (click)="gestionUsuarios(); $event.preventDefault()">
+                      Gestión de Usuarios
                     </a>
                   </li>
                 </ng-container>
@@ -41,13 +51,8 @@ import { User, UserRole } from '../../../core/interfaces/user.interface';
                 <!-- Cajero Menu -->
                 <ng-container *ngIf="currentUser.rol === UserRole.CAJERO">
                   <li class="nav-item">
-                    <a class="nav-link" href="#" (click)="registrarConsumidor(); $event.preventDefault()">
-                      Consumidores
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="#" (click)="consumo(); $event.preventDefault()">
-                      Consumos
+                    <a class="nav-link" href="#" (click)="gestionConsumos(); $event.preventDefault()">
+                      Gestión de Consumos
                     </a>
                   </li>
                 </ng-container>
@@ -55,22 +60,8 @@ import { User, UserRole } from '../../../core/interfaces/user.interface';
                 <!-- Contador Menu -->
                 <ng-container *ngIf="currentUser.rol === UserRole.CONTADOR">
                   <li class="nav-item">
-                    <a class="nav-link" href="#" (click)="reporte(); $event.preventDefault()">
-                      Reportes
-                    </a>
-                  </li>
-                </ng-container>
-
-                <!-- Consumidor Menu -->
-                <ng-container *ngIf="currentUser.rol === UserRole.CONSUMIDOR">
-                  <li class="nav-item">
-                    <a class="nav-link" href="#" (click)="consumo(); $event.preventDefault()">
-                      Mis Consumos
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="#" (click)="consumo(); $event.preventDefault()">
-                      Mi Perfil
+                    <a class="nav-link" href="#" (click)="gestionReportes(); $event.preventDefault()">
+                      Gestión de Reportes
                     </a>
                   </li>
                 </ng-container>
@@ -110,10 +101,6 @@ import { User, UserRole } from '../../../core/interfaces/user.interface';
 })
 export class LayoutComponent implements OnInit, OnDestroy {
   currentUser: User | null = null;
-  showAdminMenu = false;
-  showCajeroMenu = false;
-  showContadorMenu = false;
-  showConsumidorMenu = false;
   UserRole = UserRole;
   private destroy$ = new Subject<void>();
 
@@ -128,11 +115,9 @@ export class LayoutComponent implements OnInit, OnDestroy {
       filter(user => !!user)
     ).subscribe(user => {
       this.currentUser = user;
-      this.checkUserRole();
       this.checkRouteAccess();
     });
 
-    // Suscribirse a los cambios de ruta
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd),
       takeUntil(this.destroy$)
@@ -149,53 +134,54 @@ export class LayoutComponent implements OnInit, OnDestroy {
   inicio(): void {
     if (this.currentUser) {
       switch (this.currentUser.rol) {
-        case 'ADMIN':
+        case UserRole.ADMIN:
           this.router.navigate(['/admin/dashboard']);
           break;
-        case 'CAJERO':
+        case UserRole.CAJERO:
           this.router.navigate(['/cajero/dashboard']);
           break;
-        case 'CONTADOR':
+        case UserRole.CONTADOR:
           this.router.navigate(['/contador/dashboard']);
           break;
-        case 'CONSUMIDOR':
-          this.router.navigate(['/consumidor/dashboard']);
-          break;
         default:
-          this.router.navigate(['/auth/login']);
+          this.router.navigate(['/login']);
       }
     }
   }
 
-  registroEmpresa(): void {
-    if (this.currentUser?.rol === 'ADMIN') {
+  gestionEmpresas(): void {
+    if (this.currentUser?.rol === UserRole.ADMIN) {
       this.router.navigate(['/admin/empresas']);
     }
   }
 
-  registrarConsumidor(): void {
-    if (this.currentUser?.rol === 'CAJERO') {
-      this.router.navigate(['/cajero/consumidores']);
+  gestionConsumidores(): void {
+    if (this.currentUser?.rol === UserRole.ADMIN) {
+      this.router.navigate(['/admin/consumidores']);
     }
   }
 
-  consumo(): void {
-    if (this.currentUser?.rol === 'CAJERO') {
-      this.router.navigate(['/cajero/consumos']);
-    } else if (this.currentUser?.rol === 'CONSUMIDOR') {
-      this.router.navigate(['/consumidor/consumos']);
-    }
-  }
-
-  reporte(): void {
-    if (this.currentUser?.rol === 'CONTADOR') {
-      this.router.navigate(['/contador/reportes']);
-    }
-  }
-
-  plato(): void {
-    if (this.currentUser?.rol === 'ADMIN') {
+  gestionPlatos(): void {
+    if (this.currentUser?.rol === UserRole.ADMIN) {
       this.router.navigate(['/admin/platos']);
+    }
+  }
+
+  gestionUsuarios(): void {
+    if (this.currentUser?.rol === UserRole.ADMIN) {
+      this.router.navigate(['/admin/usuarios']);
+    }
+  }
+
+  gestionConsumos(): void {
+    if (this.currentUser?.rol === UserRole.CAJERO) {
+      this.router.navigate(['/cajero/consumos']);
+    }
+  }
+
+  gestionReportes(): void {
+    if (this.currentUser?.rol === UserRole.CONTADOR) {
+      this.router.navigate(['/contador/reportes']);
     }
   }
 
@@ -208,67 +194,33 @@ export class LayoutComponent implements OnInit, OnDestroy {
     if (!this.currentUser) return '';
 
     switch (this.currentUser.rol) {
-      case 'ADMIN':
+      case UserRole.ADMIN:
         return 'Administrador';
-      case 'CAJERO':
+      case UserRole.CAJERO:
         return 'Cajero';
-      case 'CONTADOR':
+      case UserRole.CONTADOR:
         return 'Contador';
-      case 'CONSUMIDOR':
-        return 'Consumidor';
       default:
         return '';
     }
   }
 
-  private checkUserRole(): void {
-    const user = this.authService.getCurrentUser();
-    if (user) {
-      switch (user.rol) {
-        case 'ADMIN':
-          this.showAdminMenu = true;
-          this.showCajeroMenu = false;
-          this.showContadorMenu = false;
-          this.showConsumidorMenu = false;
-          break;
-        case 'CAJERO':
-          this.showAdminMenu = false;
-          this.showCajeroMenu = true;
-          this.showContadorMenu = false;
-          this.showConsumidorMenu = false;
-          break;
-        case 'CONTADOR':
-          this.showAdminMenu = false;
-          this.showCajeroMenu = false;
-          this.showContadorMenu = true;
-          this.showConsumidorMenu = false;
-          break;
-        case 'CONSUMIDOR':
-          this.showAdminMenu = false;
-          this.showCajeroMenu = false;
-          this.showContadorMenu = false;
-          this.showConsumidorMenu = true;
-          break;
-      }
-    }
-  }
-
   private checkRouteAccess(): void {
-    const user = this.authService.getCurrentUser();
-    if (!user) {
-      this.router.navigate(['/auth/login']);
+    const currentRoute = this.router.url;
+    if (!this.currentUser) {
+      if (!currentRoute.includes('/login')) {
+        this.router.navigate(['/login']);
+      }
       return;
     }
 
-    const currentRoute = this.router.url;
-    if (currentRoute.startsWith('/admin') && user.rol !== 'ADMIN') {
-      this.router.navigate(['/auth/login']);
-    } else if (currentRoute.startsWith('/cajero') && user.rol !== 'CAJERO') {
-      this.router.navigate(['/auth/login']);
-    } else if (currentRoute.startsWith('/contador') && user.rol !== 'CONTADOR') {
-      this.router.navigate(['/auth/login']);
-    } else if (currentRoute.startsWith('/consumidor') && user.rol !== 'CONSUMIDOR') {
-      this.router.navigate(['/auth/login']);
+    // Verificar acceso basado en roles
+    if (currentRoute.includes('/admin') && this.currentUser.rol !== UserRole.ADMIN) {
+      this.router.navigate(['/login']);
+    } else if (currentRoute.includes('/cajero') && this.currentUser.rol !== UserRole.CAJERO) {
+      this.router.navigate(['/login']);
+    } else if (currentRoute.includes('/contador') && this.currentUser.rol !== UserRole.CONTADOR) {
+      this.router.navigate(['/login']);
     }
   }
 } 

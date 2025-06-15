@@ -36,6 +36,22 @@ import { User, UserRole } from '../../../core/interfaces/user.interface';
           </div>
         </div>
 
+        <!-- Gestión de Consumidores -->
+        <div class="col-md-4">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">Gestión de Consumidores</h5>
+              <p class="card-text">
+                Administre los consumidores registrados en el sistema, incluyendo su información
+                personal y empresa asociada.
+              </p>
+              <a [routerLink]="['/admin/consumidores']" class="btn btn-primary">
+                Gestionar Consumidores
+              </a>
+            </div>
+          </div>
+        </div>
+
         <!-- Gestión de Platos -->
         <div class="col-md-4">
           <div class="card h-100">
@@ -100,8 +116,6 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
         return 'Cajero';
       case UserRole.CONTADOR:
         return 'Contador';
-      case UserRole.CONSUMIDOR:
-        return 'Consumidor';
       default:
         return '';
     }

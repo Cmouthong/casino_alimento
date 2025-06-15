@@ -56,10 +56,15 @@ import { Consumidor } from '../../../core/models/consumidor.model';
             </div>
             <div class="col-md-10">
               <h5 class="card-title">{{ consumidor.nombre }}</h5>
-              <p class="card-text">
-                <strong>Cédula:</strong> {{ consumidor.cedula }}<br />
-                <strong>Email:</strong> {{ consumidor.email }}
-              </p>
+              <div class="mb-3">
+                <strong>Nombre:</strong> {{ consumidor.nombre }}
+              </div>
+              <div class="mb-3">
+                <strong>Teléfono:</strong> {{ consumidor.telefono }}
+              </div>
+              <div class="mb-3">
+                <strong>Empresa:</strong> {{ getNombreEmpresa(consumidor.empresaNIT) }}
+              </div>
             </div>
           </div>
         </div>
@@ -338,5 +343,13 @@ export class ConsumosComponent implements OnInit {
     }
 
     return plato.precio * consumo.cantidad;
+  }
+
+  getNombreEmpresa(empresaNIT: string | undefined): string {
+    if (!empresaNIT) {
+      return 'Empresa no especificada';
+    }
+    // Implementa la lógica para obtener el nombre de la empresa a partir del NIT
+    return 'Nombre de la Empresa';
   }
 } 

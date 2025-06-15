@@ -1,55 +1,46 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpEvent } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
-export interface Consumidor {
-  cedula: string;
-  nombre: string;
-  apellido: string;
-  telefono: string;
-  email: string;
-  imagen?: string;
-}
+import { environment } from '../../../environments/environment';
+import { Consumidor, ConsumidorResponseDTO } from '../models/consumidor.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ConsumidorService {
+  private apiUrl = `${environment.apiUrl}/consumidores`;
+  private adminApiUrl = `${environment.apiUrl}/admin/consumidores`;
+
   constructor(private http: HttpClient) {}
 
   getAll(): Observable<Consumidor[]> {
-    return this.http.get<Consumidor[]>('/consumidores');
+    return this.http.get<Consumidor[]>(this.apiUrl);
   }
 
   getByCedula(cedula: string): Observable<Consumidor> {
-    return this.http.get<Consumidor>(`/consumidores/${cedula}`);
+    return this.http.get<Consumidor>(`${this.apiUrl}/${cedula}`);
   }
 
-  create(consumidor: Consumidor, imagen?: File): Observable<Consumidor> {
-    const formData = new FormData();
-    formData.append('consumidor', JSON.stringify(consumidor));
-    if (imagen) {
-      formData.append('imagen', imagen);
-    }
-    return this.http.post<Consumidor>('/consumidores', formData);
+  create(consumidor: FormData): Observable<ConsumidorResponseDTO> {
+    return this.http.post<ConsumidorResponseDTO>(this.adminApiUrl, consumidor);
   }
 
-  update(cedula: string, consumidor: Consumidor): Observable<Consumidor> {
-    return this.http.put<Consumidor>(`/consumidores/${cedula}`, consumidor);
+  update(cedula: string, consumidor: FormData): Observable<Consumidor> {
+    return this.http.put<Consumidor>(`${this.adminApiUrl}/${cedula}`, consumidor);
   }
 
-  delete(cedula: string): Observable<void> {
-    return this.http.delete<void>(`/consumidores/${cedula}`);
+  delete(cedula: string): Observable<string> {
+    return this.http.delete<string>(`${this.apiUrl}/${cedula}`);
   }
 
   getImagen(cedula: string): Observable<Blob> {
-    return this.http.get(`/consumidores/${cedula}/imagen`, { responseType: 'blob' });
+    return this.http.get(`${this.apiUrl}/${cedula}/imagen`, { responseType: 'blob' });
   }
 
   subirImagen(cedula: string, imagen: File): Observable<HttpEvent<any>> {
     const formData = new FormData();
     formData.append('imagen', imagen);
-    return this.http.post(`/consumidores/${cedula}/subirImagen`, formData, {
+    return this.http.post(`${this.apiUrl}/${cedula}/subirImagen`, formData, {
       reportProgress: true,
       observe: 'events'
     });
@@ -58,13 +49,13 @@ export class ConsumidorService {
   modificarImagen(cedula: string, imagen: File): Observable<HttpEvent<any>> {
     const formData = new FormData();
     formData.append('imagen', imagen);
-    return this.http.post(`/consumidores/${cedula}/modificarImagen`, formData, {
+    return this.http.post(`${this.apiUrl}/${cedula}/modificarImagen`, formData, {
       reportProgress: true,
       observe: 'events'
     });
   }
 
   eliminarImagen(cedula: string): Observable<void> {
-    return this.http.delete<void>(`/consumidores/${cedula}/eliminarImagen`);
+    return this.http.delete<void>(`${this.apiUrl}/${cedula}/eliminarImagen`);
   }
 } 
